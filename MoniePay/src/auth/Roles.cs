@@ -2,8 +2,6 @@
 {
     public class Roles
     {
-
-
         public Roles() { }
         public Roles(RoleType roleName)
         {
