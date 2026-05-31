@@ -1,0 +1,30 @@
+namespace MoniePay.src.models
+{
+    public class Payments
+    {
+        public Guid Id { get; set; }
+        public Guid PaymentIntentId { get; set; }
+        public string Provider { get; set; } = string.Empty;
+        public string ProviderReference { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public string Attempt { get; set; } = string.Empty;
+        public bool IsFinal { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public PaymentAttempts? PaymentAttempts { get; set; }
+        public Payments() { }
+        public Payments(Guid id, Guid paymentIntentId, string provider, string providerReference,
+            string status, string attempt, bool isFinal, DateTime createdAt, DateTime updatedAt)
+        {
+            Id = id;
+            PaymentIntentId = paymentIntentId;
+            Provider = provider;
+            ProviderReference = providerReference;
+            Status = status;
+            Attempt = attempt;
+            IsFinal = isFinal;
+            CreatedAt = createdAt;
+            UpdatedAt = updatedAt;
+        }
+    }
+}

@@ -1,0 +1,177 @@
+# Visual Studio / .NET
+.vs/
+bin/
+obj/
+obj/**/
+bin/**/
+*.user
+*.userosscache
+*.suo
+*.DotSettings.user
+*.ncrunch*
+*.ide.*
+*.cache
+*.log
+
+# Rider
+.idea/
+*.sln.iml
+
+# Build outputs
+publish/
+PublishProfiles/
+*.Publish.xml
+*.dbmdl
+
+# NuGet
+*.nupkg
+# Uncomment if you have packages folder
+# packages/
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/
+
+# EF Core Migrations
+Migrations/  # remove if you want to keep migrations in repo
+
+# ASP.NET Core
+appsettings.*.json
+appsettings.Development.json
+secrets.json
+
+# Node / Client (if MoniePay.Client uses Node)
+node_modules/
+dist/
+npm-debug.log
+yarn-error.log
+
+# Temp files
+*.tmp
+*.temp
+*.bak
+*.orig
+
+# Certificates, keys, and secrets
+*.pfx
+*.key
+*.pem
+*.crt
+
+# Logs and database files
+*.log
+*.sql
+*.sqlite
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# JetBrains Rider caches
+.idea/
+.idea/*
+
+# Coverage & test results
+coverage/
+TestResults/
+*.coverage
+*.coveragexml
+
+# Docker
+docker-compose.override.yml
+
+# VS Code workspace storage
+.code-workspace
+# Visual Studio / .NET
+.vs/
+bin/
+obj/
+obj/**/
+bin/**/
+*.user
+*.userosscache
+*.suo
+*.DotSettings.user
+*.ncrunch*
+*.ide.*
+*.cache
+*.log
+
+# Rider
+.idea/
+*.sln.iml
+
+# Build outputs
+publish/
+PublishProfiles/
+*.Publish.xml
+*.dbmdl
+
+# NuGet
+*.nupkg
+# Uncomment if you have packages folder
+# packages/
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/
+
+# EF Core Migrations
+Migrations/  # remove if you want to keep migrations in repo
+
+# ASP.NET Core
+appsettings.*.json
+appsettings.Development.json
+secrets.json
+
+# Node / Client (if MoniePay.Client uses Node)
+node_modules/
+dist/
+npm-debug.log
+yarn-error.log
+
+# Temp files
+*.tmp
+*.temp
+*.bak
+*.orig
+
+# Certificates, keys, and secrets
+*.pfx
+*.key
+*.pem
+*.crt
+
+# Logs and database files
+*.log
+*.sql
+*.sqlite
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# JetBrains Rider caches
+.idea/
+.idea/*
+
+# Coverage & test results
+coverage/
+TestResults/
+*.coverage
+*.coveragexml
+
+# Docker
+docker-compose.override.yml
+
+# VS Code workspace storage
+.code-workspace
+
