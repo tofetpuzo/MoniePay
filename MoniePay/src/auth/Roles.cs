@@ -6,12 +6,10 @@
         public Roles(RoleType roleName)
         {
             this.RoleName = roleName;
-            this.RoleId = Guid.NewGuid();
+            this.Id = Guid.NewGuid();
         }
-
-        public Guid RoleId { get; set; }
+        public Guid Id { get; set; }
         public RoleType RoleName { get; set; }
-
         [Flags]
         public enum RoleType
         {
