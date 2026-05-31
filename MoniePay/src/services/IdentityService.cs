@@ -6,11 +6,12 @@ using MoniePay.src.auth;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using static IdentityService;
 
 public interface IIdentityService
 {
     // Return the actual token model data, not an HTTP result
-    Task<AccessTokenResponse> LoginAsync(User user);
+    Task<AccessTokenResponse> LoginAsync(User user, AuthHelpers authHelpers);
 }
 
 public class IdentityService : IIdentityService
@@ -92,7 +93,7 @@ public class IdentityService : IIdentityService
         };
     }
 
-    public static class AuthHelpers
+    public class AuthHelpers
     {
         // Build claims from user data and role flags; optionally include Identity roles from UserManager<User>
         public static async Task<List<Claim>> BuildUserClaimsAsync(
