@@ -11,7 +11,7 @@ namespace MoniePay.src.auth
         public string? username { get; set; }
 
         [JsonProperty("password")]
-        public string? password { get; set; } 
+        public string? password { get; set; }
         [JsonProperty("isActive")]
         public bool? isActive { get; set; }
 
@@ -26,5 +26,8 @@ namespace MoniePay.src.auth
 
         [JsonProperty("roleFlags")]
         public Roles.RoleType RoleFlags { get; set; } = Roles.RoleType.None;
+
+        [JsonProperty("createdOn")]
+        public DateTime createdOn = DateTime.UtcNow;
     }
 }
