@@ -228,23 +228,14 @@ namespace MoniePay.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
-                    b.Property<string>("email")
-                        .HasColumnType("text");
+                    b.Property<DateTime>("createdOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool?>("isActive")
                         .HasColumnType("boolean");
 
                     b.Property<bool?>("isAdmin")
                         .HasColumnType("boolean");
-
-                    b.Property<string>("password")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("userId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("username")
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
