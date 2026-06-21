@@ -1,25 +1,51 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace MoniePay.src.auth
 {
     public class User : IdentityUser<Guid>
     {
+        // Aliases that delegate to the Identity-provided columns.
+        // [NotMapped] tells EF Core not to create a separate database column.
+        // [JsonIgnore] on the inherited UserName/Email/Id keeps JSON output lowercase only.
+
+        [NotMapped]
         [JsonProperty("userId")]
-        public Guid userId { get; set; } // you can map this to Id or remove duplicate
+        public Guid userId
+        {
+            get => Id;
+            set => Id = value;
+        }
 
+        [NotMapped]
         [JsonProperty("username")]
-        public string? username { get; set; }
+        public string? username
+        {
+            get => UserName;
+            set => UserName = value;
+        }
 
+        [NotMapped]
+        [JsonProperty("email")]
+        public string? email
+        {
+            get => Email;
+            set => Email = value;
+        }
+
+        // Identity stores hashed passwords in PasswordHash. Never persist raw passwords.
+        // Keep this only as a transient property for incoming registration data; do not
+        // expose it on outbound responses.
+        [NotMapped]
         [JsonProperty("password")]
         public string? password { get; set; }
+
         [JsonProperty("isActive")]
         public bool? isActive { get; set; }
 
         [JsonProperty("isAdmin")]
         public bool? isAdmin { get; set; }
-
-        [JsonProperty("email")]
-        public string? email { get; set; } // IdentityUser already has Email
 
         [JsonProperty("roles")]
         public List<Roles> roles { get; set; } = new();
@@ -28,6 +54,6 @@ namespace MoniePay.src.auth
         public Roles.RoleType RoleFlags { get; set; } = Roles.RoleType.None;
 
         [JsonProperty("createdOn")]
-        public DateTime createdOn = DateTime.UtcNow;
+        public DateTime createdOn { get; set; } = DateTime.UtcNow;
     }
 }
