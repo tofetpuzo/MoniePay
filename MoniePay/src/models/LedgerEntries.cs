@@ -1,3 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * Debit and credit postings against ledger accounts.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
 namespace MoniePay.src.models
 {
     public class LedgerEntries

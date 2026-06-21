@@ -1,3 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * Payment intent aggregate root with idempotency key.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
 namespace MoniePay.src.models
 {
     public class PaymentIntents

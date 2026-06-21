@@ -1,3 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * HTTP endpoints for authentication and user registration.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MoniePay.src.services;

@@ -1,3 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * Customer profile aggregate, including KYC and tenant scoping.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
 using MoniePay.src.auth;
 
 namespace MoniePay.src.models

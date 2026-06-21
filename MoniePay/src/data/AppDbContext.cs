@@ -1,3 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * EF Core database context wiring ASP.NET Identity to the domain model.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

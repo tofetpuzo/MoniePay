@@ -1,3 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * Chart of accounts for the double-entry ledger.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
 namespace MoniePay.src.models
 {
     public class LedgerAccounts

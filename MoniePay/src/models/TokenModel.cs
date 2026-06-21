@@ -1,4 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿// SPDX-License-Identifier: Apache-2.0
+/*
+ * JWT access and refresh token data transfer objects.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
+using Newtonsoft.Json;
 namespace MoniePay.src.models
 {
     public class TokenModel

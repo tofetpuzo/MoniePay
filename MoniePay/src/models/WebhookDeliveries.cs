@@ -1,4 +1,11 @@
-﻿namespace MoniePay.src.models
+﻿// SPDX-License-Identifier: Apache-2.0
+/*
+ * Outbound webhook delivery attempts and outcomes.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
+namespace MoniePay.src.models
 {
     public class WebhookDeliveries
     {

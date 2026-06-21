@@ -1,4 +1,11 @@
-﻿using MD5Hash;
+﻿// SPDX-License-Identifier: Apache-2.0
+/*
+ * User registration, login, and JWT issuance.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
+using MD5Hash;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;

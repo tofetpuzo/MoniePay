@@ -1,3 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * Stored payment methods for a customer (tokenized).
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
 namespace MoniePay.src.models
 {
     public class PaymentMethods

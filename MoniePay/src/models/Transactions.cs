@@ -1,3 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * Recorded financial transactions tied to a payment intent.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
 namespace MoniePay.src.models
 {
     public class Transactions

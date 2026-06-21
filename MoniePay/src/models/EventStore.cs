@@ -1,4 +1,11 @@
-﻿using System.Text.Json;
+﻿// SPDX-License-Identifier: Apache-2.0
+/*
+ * Append-only domain event log.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
+using System.Text.Json;
 
 namespace MoniePay.src.models
 {

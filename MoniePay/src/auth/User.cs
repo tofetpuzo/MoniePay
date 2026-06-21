@@ -1,3 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * Application user backed by ASP.NET Identity.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;

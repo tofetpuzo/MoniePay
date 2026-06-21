@@ -1,4 +1,11 @@
-﻿namespace MoniePay.src.auth
+﻿// SPDX-License-Identifier: Apache-2.0
+/*
+ * Role definitions and flag-enum for role-based access control.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
+namespace MoniePay.src.auth
 {
     public class Roles
     {

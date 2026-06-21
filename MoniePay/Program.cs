@@ -1,3 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * Application composition root and HTTP pipeline.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MoniePay.Components;

@@ -1,3 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * DTO for inbound user registration requests.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
