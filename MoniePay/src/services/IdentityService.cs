@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using MoniePay.src.auth;
+using MoniePay.src.services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -12,6 +13,7 @@ public interface IIdentityService
 {
     // Return the actual token model data, not an HTTP result
     Task<AccessTokenResponse> LoginAsync(User user, AuthHelpers authHelpers);
+    Task<IdentityResult> RegisterUserAsync(RegisterUser userDetails);
 }
 
 public class IdentityService : IIdentityService
@@ -128,5 +130,22 @@ public class IdentityService : IIdentityService
 
             return authClaims;
         }
+    }
+
+    public async Task<IdentityResult> RegisterUserAsync(RegisterUser userDetails)
+    {
+        var user = new User
+        {
+            UserName = userDetails.Username,
+            Email = userDetails.Email,
+            PasswordHash = userDetails.Password,
+        };
+
+        IdentityResult res = await _userManager.CreateAsync(user);
+        if (!res.Succeeded)
+        {
+            throw new InvalidOperationException("failed registration");
+        }
+        return IdentityResult.Success;
     }
 }
