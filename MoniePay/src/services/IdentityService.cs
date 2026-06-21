@@ -138,14 +138,14 @@ public class IdentityService : IIdentityService
         {
             UserName = userDetails.Username,
             Email = userDetails.Email,
-            PasswordHash = userDetails.Password,
         };
 
-        IdentityResult res = await _userManager.CreateAsync(user);
+        IdentityResult res = await _userManager.CreateAsync(user, userDetails.Password);
         if (!res.Succeeded)
         {
-            throw new InvalidOperationException("failed registration");
+            var errors = string.Join("; ", res.Errors.Select(e => $"{e.Code}: {e.Description}"));
+            throw new InvalidOperationException($"Registration failed - {errors}");
         }
-        return IdentityResult.Success;
+        return res;
     }
 }
