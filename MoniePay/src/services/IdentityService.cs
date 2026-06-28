@@ -5,7 +5,6 @@
  * Copyright (c) 2026, MoniePay
  */
 
-using MD5Hash;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -14,12 +13,11 @@ using MoniePay.src.services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using static IdentityService;
 
 public interface IIdentityService
 {
     // Return the actual token model data, not an HTTP result
-    Task<AccessTokenResponse> LoginAsync(User user, AuthHelpers authHelpers);
+    Task<AccessTokenResponse> LoginAsync(string username, string password);
     Task<IdentityResult> RegisterUserAsync(RegisterUser userDetails);
 }
 
@@ -34,36 +32,34 @@ public class IdentityService : IIdentityService
         _configuration = configuration; // Loads secret keys from appsettings.json
     }
 
-    public async Task<AccessTokenResponse> LoginAsync(User users, AuthHelpers authHelpers)
+    public async Task<AccessTokenResponse> LoginAsync(string username, string password)
     {
 
         // 1. Validate User Credentials
-        if (string.IsNullOrEmpty(users.username) || string.IsNullOrEmpty(users.password))
+        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
         {
-            if (string.IsNullOrEmpty(users.username))
+            if (string.IsNullOrEmpty(username))
             {
-                throw new ArgumentException("Username (email) must not be null or empty.", nameof(users));
+                throw new ArgumentException("Username (email) must not be null or empty.", nameof(username));
             }
-            if (string.IsNullOrEmpty(users.password))
+            if (string.IsNullOrEmpty(password))
             {
-                throw new ArgumentException("Password(password) must not be null or empty", nameof(users));
+                throw new ArgumentException("Password(password) must not be null or empty", nameof(username));
             }
         }
 
-        var user = await _userManager.FindByNameAsync(users.username);
+        var user = await _userManager.FindByNameAsync(username);
 
         // Dynamically append authorization roles assigned to this user
-        var authClaims = await AuthHelpers.BuildUserClaimsAsync(user, null);
 
         if (user == null)
         {
             throw new UnauthorizedAccessException("Invalid username or password.");
         }
+        var authClaims = await AuthHelpers.BuildUserClaimsAsync(user, null);
 
-        string salt = user.userId.ToString();
-        string md5Password = user.password.GetMD5WithSalt(salt, EncodingType.UTF8);
         // Verify the hashed password securely [5]
-        bool isPasswordValid = await _userManager.CheckPasswordAsync(user, md5Password);
+        bool isPasswordValid = await _userManager.CheckPasswordAsync(user, password);
         if (!isPasswordValid)
         {
             throw new UnauthorizedAccessException("Invalid email or password.");
@@ -143,11 +139,13 @@ public class IdentityService : IIdentityService
     {
         var user = new User
         {
+
             UserName = userDetails.Username,
             Email = userDetails.Email,
         };
 
         IdentityResult res = await _userManager.CreateAsync(user, userDetails.Password);
+
         if (!res.Succeeded)
         {
             var errors = string.Join("; ", res.Errors.Select(e => $"{e.Code}: {e.Description}"));

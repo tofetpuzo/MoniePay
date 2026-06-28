@@ -22,7 +22,7 @@ namespace MoniePay.src.auth
         public Guid userId
         {
             get => Id;
-            set => Id = value;
+            set => Id = new Guid();
         }
 
         [NotMapped]
@@ -46,7 +46,11 @@ namespace MoniePay.src.auth
         // expose it on outbound responses.
         [NotMapped]
         [JsonProperty("password")]
-        public string? password { get; set; }
+        public string? password
+        {
+            get => PasswordHash;
+            set => PasswordHash = value;
+        }
 
         [JsonProperty("isActive")]
         public bool? isActive { get; set; }

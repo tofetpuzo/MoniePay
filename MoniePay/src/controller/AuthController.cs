@@ -31,5 +31,15 @@ namespace MoniePay.src.controller
             var res = await _identityService.RegisterUserAsync(user);
             return Ok(res);
         }
+
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginUser(string username, string password)
+        {
+            if (username == null || password == null) return BadRequest();
+            var res = await _identityService.LoginAsync(username, password);
+            return Ok(res);
+        }
+
     }
 }
