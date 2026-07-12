@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using MoniePay.src.auth;
+using MoniePay.src.dto;
 using MoniePay.src.services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

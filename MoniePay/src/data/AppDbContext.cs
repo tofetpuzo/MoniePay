@@ -45,6 +45,13 @@ namespace MoniePay.src.data
             builder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogins");
             builder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens");
             builder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims");
+
+            // One user -> many role rows, linked by Roles.UserId.
+            builder.Entity<Roles>()
+                .HasOne(r => r.User)
+                .WithMany(u => u.roles)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
