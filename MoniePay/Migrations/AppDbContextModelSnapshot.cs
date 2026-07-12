@@ -162,7 +162,7 @@ namespace MoniePay.Migrations
                     b.Property<int>("RoleName")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -747,9 +747,13 @@ namespace MoniePay.Migrations
 
             modelBuilder.Entity("MoniePay.src.auth.Roles", b =>
                 {
-                    b.HasOne("MoniePay.src.auth.User", null)
+                    b.HasOne("MoniePay.src.auth.User", "User")
                         .WithMany("roles")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MoniePay.src.models.Customer", b =>
