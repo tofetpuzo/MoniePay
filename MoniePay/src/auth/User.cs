@@ -13,39 +13,11 @@ namespace MoniePay.src.auth
 {
     public class User : IdentityUser<Guid>
     {
-        // Aliases that delegate to the Identity-provided columns.
-        // [NotMapped] tells EF Core not to create a separate database column.
-        // [JsonIgnore] on the inherited UserName/Email/Id keeps JSON output lowercase only.
-
-        [NotMapped]
-        [JsonProperty("userId")]
-        public Guid userId
-        {
-            get => Id;
-            set => Id = new Guid();
-        }
-
-        [NotMapped]
-        [JsonProperty("username")]
-        public string? username
-        {
-            get => UserName;
-            set => UserName = value;
-        }
-
-        [NotMapped]
-        [JsonProperty("email")]
-        public string? email
-        {
-            get => Email;
-            set => Email = value;
-        }
-
         // Identity stores hashed passwords in PasswordHash. Never persist raw passwords.
         // Keep this only as a transient property for incoming registration data; do not
-        // expose it on outbound responses.
+        // expose it on outbound responses ([JsonIgnore] prevents leaking the hash).
         [NotMapped]
-        [JsonProperty("password")]
+        [System.Text.Json.Serialization.JsonIgnore]
         public string? password
         {
             get => PasswordHash;
@@ -58,6 +30,7 @@ namespace MoniePay.src.auth
         [JsonProperty("isAdmin")]
         public bool? isAdmin { get; set; }
 
+        // Role rows linked to this user via Roles.UserId (one-to-many).
         [JsonProperty("roles")]
         public List<Roles> roles { get; set; } = new();
 

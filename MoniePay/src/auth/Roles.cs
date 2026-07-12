@@ -4,7 +4,7 @@
  *
  * Copyright (c) 2026, MoniePay
  */
-
+using System.Text.Json.Serializationwh
 namespace MoniePay.src.auth
 {
     public class Roles
@@ -15,8 +15,19 @@ namespace MoniePay.src.auth
             this.RoleName = roleName;
             this.Id = Guid.NewGuid();
         }
+
         public Guid Id { get; set; }
         public RoleType RoleName { get; set; }
+
+        // Foreign key to the owning user (Users.Id). A role row is created
+        // after the user is persisted, so this is always populated.
+        public Guid UserId { get; set; }
+
+        // Back-reference for EF only; ignored by the serializer to avoid a
+        // User -> roles -> User cycle in responses.
+        [JsonIgnore]
+        public User? User { get; set; }
+
         [Flags]
         public enum RoleType
         {

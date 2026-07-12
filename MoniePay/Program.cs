@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using MoniePay.Components;
 using MoniePay.src.auth;
 using MoniePay.src.data;
+using MoniePay.src.services;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -22,6 +23,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 builder.Services.AddDbContextPool<AppDbContext>(options => options.UseNpgsql(connectionString));
 

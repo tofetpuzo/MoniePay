@@ -7,6 +7,8 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MoniePay.src.auth;
+using MoniePay.src.dto;
 using MoniePay.src.services;
 
 namespace MoniePay.src.controller
