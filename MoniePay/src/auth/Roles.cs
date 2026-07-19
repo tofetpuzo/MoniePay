@@ -4,7 +4,7 @@
  *
  * Copyright (c) 2026, MoniePay
  */
-using System.Text.Json.Serializationwh
+using System.Text.Json.Serialization;
 namespace MoniePay.src.auth
 {
     public class Roles
