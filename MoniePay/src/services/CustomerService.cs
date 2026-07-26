@@ -17,6 +17,7 @@ namespace MoniePay.src.services
     public interface ICustomerService
     {
         Task<Customer> RegisterCustomerAsync(RegisterCustomerRequest request);
+        Task<Customer> GetCustomer(Guid? customerId);
     }
 
     public class CustomerService : ICustomerService
@@ -81,5 +82,24 @@ namespace MoniePay.src.services
 
             return customer;
         }
+
+        public async Task<Customer> GetCustomer(Guid? customerId)
+        {
+            ArgumentNullException.ThrowIfNull(customerId);
+
+            try
+            {
+                var customer = await _db.FindAsync<Customer>(customerId) ?? throw new KeyNotFoundException("cannot find customer");
+                return customer;
+            }
+            catch
+            (Exception ex)
+            {
+                throw new Exception(null, ex);
+
+            }
+        }
     }
+
+
 }
