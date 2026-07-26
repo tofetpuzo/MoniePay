@@ -40,6 +40,7 @@ namespace MoniePay.src.dto
         public PaymentAttempts? PaymentAttempts { get; set; }
     }
 
-    // look at the structure in db of payment and the payment-intent
+    // look at the structure in db of payment and the payment-intent, transactions because transactions should be in payment.
 
+    // so payment should be sent after payintent is successful so transaction can be null until payment is successful.
 }
