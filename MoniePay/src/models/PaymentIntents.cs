@@ -7,25 +7,6 @@
 namespace MoniePay.src.models
 
 {
-    [Flags]
-    public enum Status
-    {
-        SUCCESS = 13,
-        FAIL = 23,
-        PROCESSING = 33,
-        TRYING = 43
-    }
-
-    [Flags]
-    public enum Channel
-    {
-        ATM = 10 << 3,
-        WEB = 11 << 4,
-        POS = 12 << 5,
-        MOBILE = 13 << 6,
-        API = 14 << 7,
-    }
-
     public class PaymentIntents
     {
         public Guid Id { get; set; }
