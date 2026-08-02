@@ -11,18 +11,16 @@ namespace MoniePay.src.models
     {
         public Guid Id { get; set; }
         public Guid PaymentIntentId { get; set; }
-        public string Status { get; set; } = string.Empty;
+        public Status Status { get; set; } = Status.PROCESSING;
         public DateTime CreatedAt { get; set; }
-
         public LedgerEntries? LedgerEntries { get; set; }
 
         public Transactions() { }
 
-        public Transactions(Guid id, Guid paymentIntentId, string status, DateTime createdAt)
+        public Transactions(Guid id, Guid paymentIntentId, DateTime createdAt)
         {
             Id = id;
             PaymentIntentId = paymentIntentId;
-            Status = status;
             CreatedAt = createdAt;
         }
     }
