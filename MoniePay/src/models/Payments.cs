@@ -13,7 +13,8 @@ namespace MoniePay.src.models
         public Guid PaymentIntentId { get; set; }
         public string Provider { get; set; } = string.Empty;
         public string ProviderReference { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
+        public Status Status { get; set; } = Status.PROCESSING;
+        public Channel Channel { get; set; } = Channel.API;
         public string Attempt { get; set; } = string.Empty;
         public bool IsFinal { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -21,7 +22,7 @@ namespace MoniePay.src.models
         public PaymentAttempts? PaymentAttempts { get; set; }
         public Payments() { }
         public Payments(Guid id, Guid paymentIntentId, string provider, string providerReference,
-            string status, string attempt, bool isFinal, DateTime createdAt, DateTime updatedAt)
+            Status status, string attempt, bool isFinal, DateTime createdAt, DateTime updatedAt)
         {
             Id = id;
             PaymentIntentId = paymentIntentId;
