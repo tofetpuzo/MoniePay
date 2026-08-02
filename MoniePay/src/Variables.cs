@@ -3,20 +3,20 @@
     [Flags]
     public enum Status
     {
-        SUCCESS = 13,
-        FAIL = 23,
-        PROCESSING = 33,
-        TRYING = 43
+        SUCCESS = 1 << 3,
+        FAIL = 1 << 4,
+        PROCESSING = 1 << 5,
+        TRYING = 1 << 6,
     }
 
     [Flags]
     public enum Channel
     {
-        ATM = 10 << 3,
-        WEB = 11 << 4,
-        POS = 12 << 5,
-        MOBILE = 13 << 6,
-        API = 14 << 7,
+        ATM = 1 << 1,
+        WEB = 1 << 2,
+        POS = 1 << 3,
+        MOBILE = 1 << 7,
+        API = 1 << 8,
     }
 
     public enum Currency
