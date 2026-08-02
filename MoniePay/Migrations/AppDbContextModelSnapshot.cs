@@ -359,12 +359,18 @@ namespace MoniePay.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("numeric");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Currency")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<Guid>("customerId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -445,9 +451,8 @@ namespace MoniePay.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("Channel")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Channel")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -476,9 +481,8 @@ namespace MoniePay.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<Guid?>("TransactionId")
                         .HasColumnType("uuid");
@@ -626,9 +630,8 @@ namespace MoniePay.Migrations
                     b.Property<Guid>("PaymentIntentId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
