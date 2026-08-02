@@ -29,18 +29,35 @@ namespace MoniePay.src.dto
         [Required(ErrorMessage = "Amount is required")]
         public decimal Amount { get; set; }
         public Channel channel { get; set; } = Channel.API;
-        public Status status { get; set; } = Status.PROCESSING;
-        public string IdempotencyKey { get; set; } = string.Empty;
+
+        [JsonPropertyName("idempotencyKey")]
+        [Required(ErrorMessage = "idempotencyKey is required")]
+        public required string IdempotencyKey { get; set; }
+
+        [JsonPropertyName("reference")]
         public string Reference { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public DateTime LastUpdatedAt { get; set; }
-        //public Payments? Payment { get; set; }
-        // public Transactions? Transaction { get; set; }
-        // public Payouts? Payout { get; set; }
-        public PaymentAttempts? PaymentAttempts { get; set; }
+
+        /// <summary>
+        /// Stored payment method funding the debit. Null means use the customer's
+        /// default ledger account.
+        /// </summary>
+        [JsonPropertyName("paymentMethodId")]
+        public Guid? PaymentMethodId { get; set; }
+
+        /// <summary>
+        /// True  = create the intent and settle it immediately (one round trip).
+        /// False = create the intent only; settle later via POST /payments.
+        /// Keep the option, because card/bank top-ups can be pending.
+        /// </summary>
+        [JsonPropertyName("confirm")]
+        public bool Confirm { get; set; } = true;
+
+        // status / CreatedAt / LastUpdatedAt removed: server-owned. A caller that
+        // can post its own status could declare its own payment successful.
+        //
+        // Payment / PaymentAttempts / Transaction / Payout stay absent. Everything
+        // the payment needs (customer, amount, currency) is already on this request,
+        // so nesting the entity was never necessary - and it reached
+        // Customer -> user (Identity) and cycled on Customer <-> PaymentMethods.
     }
-
-    // look at the structure in db of payment and the payment-intent, transactions because transactions should be in payment.
-
-    // so payment should be sent after payintent is successful so transaction can be null until payment is successful.
 }

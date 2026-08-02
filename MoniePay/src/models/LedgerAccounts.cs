@@ -12,14 +12,22 @@ namespace MoniePay.src.models
         public Guid Id { get; set; }
         public string AccountName { get; set; } = string.Empty;
         public string AccountType { get; set; } = string.Empty;
+        public string AccountNumber { get; set; } = string.Empty;
         public string Currency { get; set; } = string.Empty;
+        public Guid customerId { get; set; }
+        public decimal Balance { get; set; } = decimal.Zero;
         public DateTime CreatedAt { get; set; }
         public LedgerAccounts() { }
-        public LedgerAccounts(Guid id, string accountName, string currency)
+        public LedgerAccounts(Guid id, string accountName, string currency, decimal balance, Guid custId,
+            string accountNumber)
         {
             Id = id;
             AccountName = accountName;
             Currency = currency;
+            Balance = balance;
+            CreatedAt = DateTime.Now;
+            customerId = custId;
+            AccountNumber = accountNumber;
         }
     }
 }
