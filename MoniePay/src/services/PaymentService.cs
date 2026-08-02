@@ -35,7 +35,6 @@ namespace MoniePay.src.services
             }
 
             // retrieve the reciever details
-            var
         }
 
         private async Task<LedgerAccounts> ResolveSettlementAccount(PaymentIntents intent)
