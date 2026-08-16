@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MoniePay.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260801205346_initialCreatev6_add_customer_balance")]
-    partial class initialCreatev6_add_customer_balance
+    [Migration("20260816211157_AddFailureCode")]
+    partial class AddFailureCode
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -358,6 +358,10 @@ namespace MoniePay.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("AccountType")
                         .IsRequired()
                         .HasColumnType("text");
@@ -454,6 +458,9 @@ namespace MoniePay.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
+                    b.Property<int>("Channel")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -463,6 +470,14 @@ namespace MoniePay.Migrations
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("DestinationAccountName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("DestinationAccountNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("IdempotencyKey")
                         .IsRequired()
@@ -481,17 +496,14 @@ namespace MoniePay.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.Property<Guid?>("TransactionId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("channel")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("status")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -556,12 +568,18 @@ namespace MoniePay.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Attempt")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Attempt")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Channel")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FailureCode")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsFinal")
                         .HasColumnType("boolean");
@@ -580,9 +598,8 @@ namespace MoniePay.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -633,9 +650,8 @@ namespace MoniePay.Migrations
                     b.Property<Guid>("PaymentIntentId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

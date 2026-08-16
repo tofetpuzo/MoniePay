@@ -24,6 +24,9 @@ builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<PaymentService>();
+builder.Services.AddScoped<IPaymentIntentService, PaymentIntentService>();
+builder.Services.AddScoped<LedgerAccountService>();
 
 builder.Services.AddDbContextPool<AppDbContext>(options => options.UseNpgsql(connectionString));
 

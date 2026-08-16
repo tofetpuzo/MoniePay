@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MoniePay.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260801213626_initialCreatev7_add_customer_balance")]
-    partial class initialCreatev7_add_customer_balance
+    [Migration("20260816211749_test_conversion_failure_code")]
+    partial class test_conversion_failure_code
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -358,6 +358,10 @@ namespace MoniePay.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("AccountType")
                         .IsRequired()
                         .HasColumnType("text");
@@ -467,6 +471,14 @@ namespace MoniePay.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("DestinationAccountName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("DestinationAccountNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("IdempotencyKey")
                         .IsRequired()
                         .HasColumnType("text");
@@ -556,12 +568,17 @@ namespace MoniePay.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Attempt")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Attempt")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Channel")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("FailureCode")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsFinal")
                         .HasColumnType("boolean");
@@ -580,9 +597,8 @@ namespace MoniePay.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
