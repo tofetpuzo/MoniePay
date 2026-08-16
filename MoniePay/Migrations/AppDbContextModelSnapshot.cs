@@ -355,6 +355,10 @@ namespace MoniePay.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("AccountType")
                         .IsRequired()
                         .HasColumnType("text");
@@ -464,6 +468,14 @@ namespace MoniePay.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("DestinationAccountName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("DestinationAccountNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("IdempotencyKey")
                         .IsRequired()
                         .HasColumnType("text");
@@ -553,12 +565,17 @@ namespace MoniePay.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Attempt")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Attempt")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Channel")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("FailureCode")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsFinal")
                         .HasColumnType("boolean");
@@ -577,9 +594,8 @@ namespace MoniePay.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
