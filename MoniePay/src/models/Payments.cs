@@ -15,14 +15,15 @@ namespace MoniePay.src.models
         public string ProviderReference { get; set; } = string.Empty;
         public Status Status { get; set; } = Status.PROCESSING;
         public Channel Channel { get; set; } = Channel.API;
-        public string Attempt { get; set; } = string.Empty;
+        public int Attempt { get; set; } = 1;
+        public int FailureCode { get; set; } = 1;
         public bool IsFinal { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public PaymentAttempts? PaymentAttempts { get; set; }
         public Payments() { }
         public Payments(Guid id, Guid paymentIntentId, string provider, string providerReference,
-            Status status, string attempt, bool isFinal, DateTime createdAt, DateTime updatedAt)
+            Status status, int attempt, bool isFinal, DateTime createdAt, DateTime updatedAt)
         {
             Id = id;
             PaymentIntentId = paymentIntentId;
