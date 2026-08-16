@@ -37,27 +37,10 @@ namespace MoniePay.src.dto
         [JsonPropertyName("reference")]
         public string Reference { get; set; } = string.Empty;
 
-        /// <summary>
-        /// Stored payment method funding the debit. Null means use the customer's
-        /// default ledger account.
-        /// </summary>
         [JsonPropertyName("paymentMethodId")]
         public Guid? PaymentMethodId { get; set; }
 
-        /// <summary>
-        /// True  = create the intent and settle it immediately (one round trip).
-        /// False = create the intent only; settle later via POST /payments.
-        /// Keep the option, because card/bank top-ups can be pending.
-        /// </summary>
         [JsonPropertyName("confirm")]
         public bool Confirm { get; set; } = true;
-
-        // status / CreatedAt / LastUpdatedAt removed: server-owned. A caller that
-        // can post its own status could declare its own payment successful.
-        //
-        // Payment / PaymentAttempts / Transaction / Payout stay absent. Everything
-        // the payment needs (customer, amount, currency) is already on this request,
-        // so nesting the entity was never necessary - and it reached
-        // Customer -> user (Identity) and cycled on Customer <-> PaymentMethods.
     }
 }
