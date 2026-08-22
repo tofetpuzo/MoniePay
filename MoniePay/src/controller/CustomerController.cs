@@ -14,6 +14,7 @@ namespace MoniePay.src.controller
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize] // secure by default; registration opts out with [AllowAnonymous]
     [IgnoreAntiforgeryToken]
     public class CustomerController : ControllerBase
     {

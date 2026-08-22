@@ -7,7 +7,11 @@ namespace MoniePay.src.services
 {
     public interface IPaymentIntentService
     {
-        Task<PaymentIntentResponse> CreatePaymentIntent(CreatePaymentIntentRequest? request);
+        /// <param name="authenticatedUserId">
+        /// Id of the caller, taken from the JWT - not from the request body.
+        /// The intent is only created if this user owns request.customerId.
+        /// </param>
+        Task<PaymentIntentResponse> CreatePaymentIntent(CreatePaymentIntentRequest? request, Guid authenticatedUserId);
     }
 
     public class PaymentIntentService : IPaymentIntentService
@@ -24,7 +28,8 @@ namespace MoniePay.src.services
             this.db = db;
         }
 
-        public async Task<PaymentIntentResponse> CreatePaymentIntent(CreatePaymentIntentRequest? request)
+        public async Task<PaymentIntentResponse> CreatePaymentIntent(CreatePaymentIntentRequest? request,
+            Guid authenticatedUserId)
         {
             ArgumentNullException.ThrowIfNull(request);
 
@@ -44,6 +49,13 @@ namespace MoniePay.src.services
             var customer = await customerService.GetCustomer(request.customerId)
                 ?? throw new InvalidOperationException($"Customer {request.customerId} not found");
 
+            // customerId comes from the request body, so it is attacker-controlled.
+            // Without this an authenticated user could debit anyone's account.
+            // A customer with no owner is never payable.
+            if (customer.UserId is null || customer.UserId != authenticatedUserId)
+                throw new UnauthorizedAccessException(
+                    $"Customer {request.customerId} does not belong to the authenticated user");
+
             // Server owns the identity and the timestamps; the caller never supplies them.
             var intent = new PaymentIntents(
                 id: Guid.NewGuid(),
@@ -56,17 +68,33 @@ namespace MoniePay.src.services
                 updatedAt: DateTime.UtcNow)
             {
                 Channel = request.channel,
-                Status = Status.PROCESSING
+                Status = Status.PROCESSING,
+                // Without these, ResolveSettlementAccount looks up an empty
+                // account number and every settlement fails.
+                DestinationAccountNumber = request.DestinationAccountNumber,
+                DestinationAccountName = request.DestinationAccountName
             };
 
-            // No money moves here. This only records that a payment is intended.
-            // The ledger is touched by PaymentService when POST /payments runs.
+            // Saved BEFORE settlement, for two reasons: the idempotency lookup
+            // above can only find a replay if the row exists, and the payment
+            // row SettleIntent inserts carries a FK to this intent.
+            // Deliberately outside the settlement transaction - a failed
+            // settlement should still leave a PROCESSING intent to retry.
+            db.PaymentIntent.Add(intent);
+            await db.SaveChangesAsync();
+
+            // confirm = false means create the intent only; settle later.
+            // Checked before settling, or the flag does nothing.
+            if (!request.Confirm)
+                return PaymentIntentResponse.From(intent);
+
+            var payment = await paymentService.SettleIntent(intent);
 
             // Mapped to a DTO so the entity's navigations never reach the wire.
-            return PaymentIntentResponse.From(intent);
+            return PaymentIntentResponse.From(intent, payment);
 
-            // TODO: persist via DbContext, enforce idempotency on (customerId, IdempotencyKey),
-            //       and check currency matches the customer's ledger account currency.
         }
+
+        // TODO: create an account number for customers an endpoint
     }
 }
