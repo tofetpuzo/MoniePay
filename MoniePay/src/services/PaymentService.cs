@@ -13,10 +13,9 @@ namespace MoniePay.src.services
         {
             this.db = db;
         }
-        private int attempt = 1;
 
         // function to settle the intent
-        public async Task<PaymentResponse> SettleIntent(PaymentIntents intents, Guid? paymentMethodId)
+        public async Task<PaymentResponse> SettleIntent(PaymentIntents intents)
         {
 
             // check if the money is already done 
@@ -44,8 +43,7 @@ namespace MoniePay.src.services
             {
                 // everything below will be our transaction 
 
-                var payment = new
-
+                var payment = new Payments
                 {
                     Id = Guid.NewGuid(),
                     PaymentIntentId = intents.Id,
@@ -53,16 +51,23 @@ namespace MoniePay.src.services
                     ProviderReference = $"MP-{DateTime.UtcNow:yyyyMMdd}-{Guid.NewGuid():N}"[..24],
                     Status = Status.PROCESSING,
                     Channel = intents.Channel,
-                    Attempt = Interlocked.Increment(ref attempt),
+                    Attempt = await db.Payment.CountAsync(p => p.PaymentIntentId == intents.Id) + 1,
                     IsFinal = false,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
                 };
 
+                // Without this the row is never inserted, and the ledger entries
+                // below reference a payment that does not exist.
+                db.Payment.Add(payment);
+
+                // Link the intent to its payment so callers see the navigation.
+                intents.Payment = payment;
+
                 //Enter the entry into both ledgers of the source and destination
                 db.LedgerEntries.AddRange(
                     new LedgerEntries(Guid.NewGuid(), source.Id, -intents.Amount, "DEBIT", payment.Id, DateTime.UtcNow),
-                    new LedgerEntries(Guid.NewGuid(), source.Id, intents.Amount, "CREDIT", payment.Id, DateTime.UtcNow)
+                    new LedgerEntries(Guid.NewGuid(), destination.Id, intents.Amount, "CREDIT", payment.Id, DateTime.UtcNow)
                     );
 
                 // update source balance
@@ -81,10 +86,9 @@ namespace MoniePay.src.services
                 return PaymentResponse.From(payment);
             }
             catch
-            (Exception ex)
             {
-                tx.Rollback();
-                throw ex.GetBaseException();
+                await tx.RollbackAsync();
+                throw;
             }
 
         }
