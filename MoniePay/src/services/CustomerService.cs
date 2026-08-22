@@ -54,7 +54,7 @@ namespace MoniePay.src.services
             }
 
             // The user now has an Id, so we can link a role row to it.
-            _db.Roles.Add(new Roles(Roles.RoleType.Customer) { UserId = user.Id });
+            _db.AppRoles.Add(new Roles(Roles.RoleType.Customer) { UserId = user.Id });
 
             var customer = new Customer
             {
