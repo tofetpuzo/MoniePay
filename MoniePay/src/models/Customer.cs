@@ -27,6 +27,11 @@ namespace MoniePay.src.models
         public bool IsVerifed { get; set; }
         public bool IsBlackListed { get; set; }
         public string KycLevel { get; set; } = "Tier 1";
+        // Explicit FK to the owning Identity user. Previously a shadow property,
+        // which meant ownership could not be checked without loading the
+        // navigation - so nothing stopped one user paying from another's
+        // customer account. Mapped to the existing "userId" column.
+        public Guid? UserId { get; set; }
         public User? user { get; set; } = default!;
         public ICollection<PaymentMethods> PaymentMethods { get; set; } = new List<PaymentMethods>();
         public Customer() { }
