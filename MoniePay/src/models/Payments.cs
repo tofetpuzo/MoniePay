@@ -16,7 +16,6 @@ namespace MoniePay.src.models
         public Status Status { get; set; } = Status.PROCESSING;
         public Channel Channel { get; set; } = Channel.API;
         public int Attempt { get; set; } = 1;
-        public int FailureCode { get; set; } = 1;
         public bool IsFinal { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
