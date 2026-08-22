@@ -42,5 +42,11 @@ namespace MoniePay.src.dto
 
         [JsonPropertyName("confirm")]
         public bool Confirm { get; set; } = true;
+
+        [JsonPropertyName("DestinationAccountNumber")]
+        public string DestinationAccountNumber { get; set; } = string.Empty;
+
+        [JsonPropertyName("DestinationAccountName")]
+        public string DestinationAccountName { get; set; } = string.Empty;
     }
 }

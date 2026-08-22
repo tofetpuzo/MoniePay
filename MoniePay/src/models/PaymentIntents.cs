@@ -29,7 +29,11 @@ namespace MoniePay.src.models
 
         public PaymentIntents() { }
 
-        public PaymentIntents(Guid id, Guid customerId, decimal amount, string currency, string idempotencyKey, string reference, DateTime createdAt, DateTime updatedAt)
+        // Payment is deliberately not a constructor parameter. An intent exists
+        // before any payment does; PaymentService.SettleIntent creates the
+        // Payments row and assigns it afterwards.
+        public PaymentIntents(Guid id, Guid customerId, decimal amount, string currency, string idempotencyKey,
+            string reference, DateTime createdAt, DateTime updatedAt)
         {
 
             if (amount <= 0)

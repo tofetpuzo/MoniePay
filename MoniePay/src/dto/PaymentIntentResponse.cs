@@ -10,8 +10,8 @@
  * Copyright (c) 2026, MoniePay
  */
 
-using System.Text.Json.Serialization;
 using MoniePay.src.models;
+using System.Text.Json.Serialization;
 
 namespace MoniePay.src.dto
 {
@@ -46,6 +46,19 @@ namespace MoniePay.src.dto
         [JsonPropertyName("payment")]
         public PaymentResponse? Payment { get; set; }
 
+        public static PaymentIntentResponse From(PaymentIntents intent, PaymentResponse paymentResponse) => new()
+        {
+            Id = intent.Id,
+            CustomerId = intent.CustomerId,
+            Amount = intent.Amount,
+            Currency = intent.Currency,
+            Status = intent.Status,
+            Reference = intent.Reference,
+            CreatedAt = intent.CreatedAt,
+            Payment = paymentResponse
+        };
+
+
         public static PaymentIntentResponse From(PaymentIntents intent) => new()
         {
             Id = intent.Id,
@@ -54,7 +67,7 @@ namespace MoniePay.src.dto
             Currency = intent.Currency,
             Status = intent.Status,
             Reference = intent.Reference,
-            CreatedAt = intent.CreatedAt
+            CreatedAt = intent.CreatedAt,
         };
     }
 }
