@@ -96,7 +96,6 @@ namespace MoniePay.src.services
             (Exception ex)
             {
                 throw new Exception(null, ex);
-
             }
         }
     }
