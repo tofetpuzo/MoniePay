@@ -16,6 +16,7 @@ using MoniePay.src.services;
 using System.Security.Claims;
 using System.Text;
 
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -28,6 +29,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<PaymentService>();
 builder.Services.AddScoped<IPaymentIntentService, PaymentIntentService>();
 builder.Services.AddScoped<LedgerAccountService>();
