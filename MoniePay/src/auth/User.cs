@@ -7,22 +7,11 @@
 
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MoniePay.src.auth
 {
     public class User : IdentityUser<Guid>
     {
-        // Identity stores hashed passwords in PasswordHash. Never persist raw passwords.
-        // Keep this only as a transient property for incoming registration data; do not
-        // expose it on outbound responses ([JsonIgnore] prevents leaking the hash).
-        [NotMapped]
-        [System.Text.Json.Serialization.JsonIgnore]
-        public string? password
-        {
-            get => PasswordHash;
-            set => PasswordHash = value;
-        }
 
         [JsonProperty("isActive")]
         public bool? isActive { get; set; }
