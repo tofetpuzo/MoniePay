@@ -72,6 +72,16 @@ namespace MoniePay.src.data
                 .WithMany(u => u.roles)
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // this is for account generation in the database
+            builder.HasSequence<long>("account_number_seq")
+                .StartsAt(100_000_000_000L)
+                .IncrementsBy(1);
+
+            // defense in depth refuses duplicates 
+            builder.Entity<LedgerAccounts>()
+                .HasIndex(a => a.AccountNumber)
+                .IsUnique();
         }
     }
 }
