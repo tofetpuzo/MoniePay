@@ -74,7 +74,5 @@ namespace MoniePay.src.services
 
             }
         }
-
-        //TOD0: create an account number for customer and add money 
     }
 }

@@ -52,5 +52,13 @@ namespace MoniePay.src.dto
 
         [JsonPropertyName("kycLevel")]
         public string? KycLevel { get; set; }
+
+        [JsonPropertyName("currency")]
+        [Required(ErrorMessage = "currency is required")]
+        public required Currency Currency { get; set; }
+
+        [JsonPropertyName("AccountType")]
+        [Required(ErrorMessage = "AccountType is required")]
+        public required AccountType AccountType { get; set; }
     }
 }

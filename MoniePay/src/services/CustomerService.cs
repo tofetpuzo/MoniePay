@@ -24,11 +24,13 @@ namespace MoniePay.src.services
     {
         private readonly UserManager<User> _userManager;
         private readonly AppDbContext _db;
+        private readonly LedgerAccountService _ledgerAccountService;
 
-        public CustomerService(UserManager<User> userManager, AppDbContext db)
+        public CustomerService(UserManager<User> userManager, AppDbContext db, LedgerAccountService ledgerAccountService)
         {
             _userManager = userManager;
             _db = db;
+            _ledgerAccountService = ledgerAccountService;
         }
 
         // Create the Identity user and the customer profile in a single transaction.
@@ -76,6 +78,15 @@ namespace MoniePay.src.services
             };
 
             _db.Customers.Add(customer);
+            _db.LedgerAccount.Add(new LedgerAccounts(
+                id: Guid.NewGuid(),
+                accountName: $"{customer.FirstName} {customer.LastName}",
+                currency: request.Currency.ToString(),
+                balance: decimal.Zero,
+                custId: customer.Id,
+                accountTypes: request.AccountType,
+                accountNumber: await _ledgerAccountService.NextAccountNumberAsync()));
+
             await _db.SaveChangesAsync();
 
             await transaction.CommitAsync();
