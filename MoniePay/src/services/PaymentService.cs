@@ -50,7 +50,7 @@ namespace MoniePay.src.services
                     Provider = "Moniepay",
                     ProviderReference = $"MP-{DateTime.UtcNow:yyyyMMdd}-{Guid.NewGuid():N}"[..24],
                     Status = Status.PROCESSING,
-                    Channel = intents.Channel,
+                    Channel = intents.channel,
                     Attempt = await db.Payment.CountAsync(p => p.PaymentIntentId == intents.Id) + 1,
                     IsFinal = false,
                     CreatedAt = DateTime.UtcNow,
@@ -119,5 +119,6 @@ namespace MoniePay.src.services
             return destination_account;
 
         }
+
     }
 }

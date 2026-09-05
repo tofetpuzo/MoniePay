@@ -32,7 +32,6 @@ namespace MoniePay.src.services
             Guid authenticatedUserId)
         {
             ArgumentNullException.ThrowIfNull(request);
-
             if (request.Amount <= 0)
                 throw new ArgumentException("Amount must be greater than zero", nameof(request));
 
@@ -67,7 +66,7 @@ namespace MoniePay.src.services
                 createdAt: DateTime.UtcNow,
                 updatedAt: DateTime.UtcNow)
             {
-                Channel = request.channel,
+                channel = request.channel,
                 Status = Status.PROCESSING,
                 // Without these, ResolveSettlementAccount looks up an empty
                 // account number and every settlement fails.
@@ -96,5 +95,9 @@ namespace MoniePay.src.services
         }
 
         // TODO: create an account number for customers an endpoint
+
+        //TOD0: update the ledger account_id -> to reflect in db
+
+        // 
     }
 }
