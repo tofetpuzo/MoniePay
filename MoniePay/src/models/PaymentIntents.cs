@@ -13,7 +13,7 @@ namespace MoniePay.src.models
         public Guid CustomerId { get; set; }
         public decimal Amount { get; set; }
         public string Currency { get; set; } = string.Empty;
-        public Channel Channel { get; set; } = Channel.API;
+        public Channel channel { get; set; } = Channel.API;
         public Status Status { get; set; } = Status.PROCESSING;
         public string IdempotencyKey { get; set; } = string.Empty;
         public string Reference { get; set; } = string.Empty;
