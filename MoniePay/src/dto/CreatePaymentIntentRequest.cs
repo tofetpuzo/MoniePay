@@ -44,9 +44,11 @@ namespace MoniePay.src.dto
         public bool Confirm { get; set; } = true;
 
         [JsonPropertyName("DestinationAccountNumber")]
-        public string DestinationAccountNumber { get; set; } = string.Empty;
+        [Required(ErrorMessage = "DestinationAccountNumber is required")]
+        public required string DestinationAccountNumber { get; set; } = string.Empty;
 
         [JsonPropertyName("DestinationAccountName")]
-        public string DestinationAccountName { get; set; } = string.Empty;
+        [Required(ErrorMessage = "DestinationAccountName is required")]
+        public required string DestinationAccountName { get; set; } = string.Empty;
     }
 }
