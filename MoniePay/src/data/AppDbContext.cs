@@ -78,10 +78,25 @@ namespace MoniePay.src.data
                 .StartsAt(100_000_000_000L)
                 .IncrementsBy(1);
 
+            // LedgerEntries.AccountId is the FK for the LedgerAccount navigation.
+            // Without this EF invents a second, nullable shadow column
+            // (LedgerAccountId) and AccountId is left as an unenforced duplicate.
+            builder.Entity<LedgerEntries>()
+                .HasOne(e => e.LedgerAccount)
+                .WithMany()
+                .HasForeignKey(e => e.AccountId);
+
             // defense in depth refuses duplicates 
             builder.Entity<LedgerAccounts>()
                 .HasIndex(a => a.AccountNumber)
                 .IsUnique();
+
+            // add transaction relationship with LedgerEntries
+            builder.Entity<Transactions>()
+                .HasMany(t => t.LedgerEntries)
+                .WithOne(e => e.Transaction)
+                .HasForeignKey(e => e.TransactionId)
+                .OnDelete(DeleteBehavior.ClientCascade);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MoniePay.src.data;
 using MoniePay.src.dto;
 using MoniePay.src.models;
@@ -25,6 +25,8 @@ namespace MoniePay.src.services
                 return PaymentResponse.From(existing_paymentid);
             }
 
+
+
             // retrieve the account of customer if not done
             var source = await db.LedgerAccount.FirstOrDefaultAsync(
                 so => so.customerId == intents.CustomerId && so.Currency == intents.Currency)
@@ -39,6 +41,8 @@ namespace MoniePay.src.services
             // resolve destination 
             var destination = await ResolveSettlementAccount(intents);
             await using var tx = await db.Database.BeginTransactionAsync();
+
+
             try
             {
                 // everything below will be our transaction 
@@ -64,11 +68,22 @@ namespace MoniePay.src.services
                 // Link the intent to its payment so callers see the navigation.
                 intents.Payment = payment;
 
+                // Transaction record for the settlement 
+                var transaction = new Transactions(Guid.NewGuid(), intents.Id, DateTime.UtcNow);
+                db.Transaction.Add(transaction);
+                intents.Transaction = transaction;
+
                 //Enter the entry into both ledgers of the source and destination
                 db.LedgerEntries.AddRange(
-                    new LedgerEntries(Guid.NewGuid(), source.Id, -intents.Amount, "DEBIT", payment.Id, DateTime.UtcNow),
+                    new LedgerEntries(Guid.NewGuid(), source.Id, -intents.Amount, "DEBIT", payment.Id, DateTime.UtcNow)
+                    {
+                        TransactionId = transaction.Id,
+                    },
                     new LedgerEntries(Guid.NewGuid(), destination.Id, intents.Amount, "CREDIT", payment.Id, DateTime.UtcNow)
-                    );
+                    {
+                        TransactionId = transaction.Id,
+                    });
+
 
                 // update source balance
                 source.Balance -= intents.Amount;
@@ -77,6 +92,7 @@ namespace MoniePay.src.services
                 // mark payment has done
                 payment.Status = Status.SUCCESS;
                 payment.IsFinal = true;
+                transaction.Status = Status.SUCCESS;
                 intents.Status = Status.SUCCESS;
                 intents.UpdatedAt = DateTime.UtcNow;
 
@@ -121,4 +137,9 @@ namespace MoniePay.src.services
         }
 
     }
+
+
+    // TODO: pay deposit and withdrawal.
+    // TODO: payout implementation - from one merchant to another.
+    // TODO: deposit implementation
 }
