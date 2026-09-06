@@ -16,11 +16,20 @@ namespace MoniePay.src.models
         public Guid ReferenceId { get; set; }
         public DateTime CreatedAt { get; set; }
 
+        // AccountId is the foreign key for this navigation - see AppDbContext.
+        // Without that mapping EF invents a second nullable column
+        // (LedgerAccountId) and AccountId stops being a real FK, so the
+        // navigation is deliberately not a constructor parameter.
         public LedgerAccounts? LedgerAccount { get; set; }
+
+        // add the transaction id 
+        public Guid? TransactionId { get; set; }
+        public Transactions? Transaction { get; set; }
 
         public LedgerEntries() { }
 
-        public LedgerEntries(Guid id, Guid accountId, decimal amount, string entryType, Guid referenceId, DateTime createdAt)
+        public LedgerEntries(Guid id, Guid accountId, decimal amount, string entryType,
+            Guid referenceId, DateTime createdAt)
         {
             Id = id;
             AccountId = accountId;
