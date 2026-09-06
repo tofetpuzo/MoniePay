@@ -3,6 +3,7 @@ using System;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoniePay.src.data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MoniePay.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260906183658_LedgerEntryAccountForeignKey")]
+    partial class LedgerEntryAccountForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -410,14 +413,9 @@ namespace MoniePay.Migrations
                     b.Property<Guid>("ReferenceId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("TransactionId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
-
-                    b.HasIndex("TransactionId");
 
                     b.ToTable("LedgerEntries");
                 });
@@ -646,6 +644,9 @@ namespace MoniePay.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid?>("LedgerEntriesId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("PaymentIntentId")
                         .HasColumnType("uuid");
 
@@ -653,6 +654,8 @@ namespace MoniePay.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LedgerEntriesId");
 
                     b.ToTable("Transaction");
                 });
@@ -793,14 +796,7 @@ namespace MoniePay.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MoniePay.src.models.Transactions", "Transaction")
-                        .WithMany("LedgerEntries")
-                        .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
-
                     b.Navigation("LedgerAccount");
-
-                    b.Navigation("Transaction");
                 });
 
             modelBuilder.Entity("MoniePay.src.models.PaymentAttempts", b =>
@@ -871,6 +867,15 @@ namespace MoniePay.Migrations
                     b.Navigation("PaymentAttempts");
                 });
 
+            modelBuilder.Entity("MoniePay.src.models.Transactions", b =>
+                {
+                    b.HasOne("MoniePay.src.models.LedgerEntries", "LedgerEntries")
+                        .WithMany()
+                        .HasForeignKey("LedgerEntriesId");
+
+                    b.Navigation("LedgerEntries");
+                });
+
             modelBuilder.Entity("MoniePay.src.models.Webhooks", b =>
                 {
                     b.HasOne("MoniePay.src.models.WebhookDeliveries", "WebhookDeliveries")
@@ -893,11 +898,6 @@ namespace MoniePay.Migrations
             modelBuilder.Entity("MoniePay.src.models.PaymentAttempts", b =>
                 {
                     b.Navigation("PaymentMethods");
-                });
-
-            modelBuilder.Entity("MoniePay.src.models.Transactions", b =>
-                {
-                    b.Navigation("LedgerEntries");
                 });
 #pragma warning restore 612, 618
         }
