@@ -17,6 +17,7 @@
         POS = 1 << 3,
         MOBILE = 1 << 7,
         API = 1 << 8,
+        COUNTER = 1 << 9,
     }
 
     public enum Currency
