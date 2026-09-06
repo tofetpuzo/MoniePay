@@ -94,10 +94,8 @@ namespace MoniePay.src.services
 
         }
 
-        // TODO: create an account number for customers an endpoint
-
-        //TOD0: update the ledger account_id -> to reflect in db
-
-        // 
+        // TODO: pay deposit and withdrawal.
+        // TODO: payout implementation - from one merchant to another.
+        // TODO: deposit implementation
     }
 }
