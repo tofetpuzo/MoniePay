@@ -25,7 +25,7 @@ namespace MoniePay.src.services
             string customerNumber,
             CancellationToken cancellationToken = default)
         {
-            var account = await db.LedgerAccount
+            var account = await _db.LedgerAccount
                 .AsNoTracking()
                 .FirstOrDefaultAsync(
                     a => a.AccountNumber == customerNumber,
