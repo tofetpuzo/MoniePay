@@ -1,15 +1,9 @@
 ﻿// SPDX-License-Identifier: Apache-2.0
 /*
- * Outbound view of a payment intent.
- *
- * The PaymentIntents entity carries Customer, Payment, Transaction, Payout and
- * PaymentAttempts navigations. Serialising it would reach Customer -> user
- * (Identity) and cycle on Customer <-> PaymentMethods, so it is never returned
- * directly. This carries the Id the caller needs and nothing else.
+ * use by many services(ATM, Counter, API and POS for checking customer account
  *
  * Copyright (c) 2026, MoniePay
  */
-
 
 using Microsoft.EntityFrameworkCore;
 using MoniePay.src.data;
