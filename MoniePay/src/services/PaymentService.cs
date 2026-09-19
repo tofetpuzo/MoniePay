@@ -14,13 +14,9 @@ using MoniePay.src.models;
 
 namespace MoniePay.src.services
 {
-    public class PaymentService
+    public class PaymentService(AppDbContext db)
     {
-        private readonly AppDbContext db;
-        public PaymentService(AppDbContext db)
-        {
-            this.db = db;
-        }
+        private readonly AppDbContext db = db;
 
         // function to settle the intent
         public async Task<PaymentResponse> SettleIntent(PaymentIntents intents)
