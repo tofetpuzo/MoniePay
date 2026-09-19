@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 /*
- * Customer onboarding: creates the Identity user and the customer profile
- * atomically.
- *
+ * AdminService onboarding: admin service for moniepay
  * Copyright (c) 2026, MoniePay
  */
 
