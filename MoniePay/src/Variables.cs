@@ -1,4 +1,10 @@
-﻿namespace MoniePay.src
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * variables for all models *
+ * Copyright (c) 2026, MoniePay
+ */
+
+namespace MoniePay.src
 {
     [Flags]
     public enum Status
