@@ -30,5 +30,10 @@ namespace MoniePay.src.models
             AccountNumber = accountNumber;
             accountType = accountTypes;
         }
+
+        public static explicit operator string(LedgerAccounts v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
