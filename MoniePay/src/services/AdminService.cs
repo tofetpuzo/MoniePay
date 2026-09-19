@@ -1,4 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * Customer onboarding: creates the Identity user and the customer profile
+ * atomically.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
+using Microsoft.AspNetCore.Identity;
 using MoniePay.src.auth;
 using MoniePay.src.data;
 using MoniePay.src.dto;
