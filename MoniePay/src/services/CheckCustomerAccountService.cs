@@ -14,7 +14,7 @@ namespace MoniePay.src.services
 
     public interface ICheckCustomerAccountService
     {
-        Task<CreateDepositRequest> CheckCustomerDetails(string accountNumber);
+        Task<CreateDepositRequest> GetCustomerAccountNumberAsync(string accountNumber);
     }
     public class CheckCustomerAccountService(AppDbContext db)
     {
