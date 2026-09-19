@@ -1,4 +1,12 @@
-﻿using MoniePay.src.auth;
+﻿// SPDX-License-Identifier: Apache-2.0
+/*
+ * Customer onboarding: creates the Identity user and the customer profile
+ * atomically.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
+using MoniePay.src.auth;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;

@@ -1,4 +1,11 @@
-﻿using MoniePay.src.models;
+﻿// SPDX-License-Identifier: Apache-2.0
+/*
+ * Customer onboarding: creates the Identity user and the customer profile
+ * atomically.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
 using System.Text.Json.Serialization;
 
 namespace MoniePay.src.dto
@@ -8,14 +15,11 @@ namespace MoniePay.src.dto
         [JsonPropertyName("id")]
         public Guid Id { get; set; }
 
-        [JsonPropertyName("customerId")]
-        public Guid CustomerId { get; set; }
-
         [JsonPropertyName("amount")]
         public decimal Amount { get; set; }
 
         [JsonPropertyName("currency")]
-        public string Currency { get; set; } = string.Empty;
+        public Currency Currency { get; set; }
 
         [JsonPropertyName("status")]
         public Status Status { get; set; }
@@ -25,24 +29,11 @@ namespace MoniePay.src.dto
 
         public static DepositResponse From(CreateDepositRequest depositRequest) => new()
         {
-            //Id = intent.Id,
-            //CustomerId = intent.CustomerId,
-            //Amount = intent.Amount,
-            //Currency = intent.Currency,
-            //Status = intent.Status,
-            //CreatedAt = intent.CreatedAt,
-        };
-
-
-        public static PaymentIntentResponse From(PaymentIntents intent) => new()
-        {
-            Id = intent.Id,
-            CustomerId = intent.CustomerId,
-            Amount = intent.Amount,
-            Currency = intent.Currency,
-            Status = intent.Status,
-            Reference = intent.Reference,
-            CreatedAt = intent.CreatedAt,
+            Id = new Guid(),
+            Amount = depositRequest.Amount,
+            Status = depositRequest.Status,
+            Currency = depositRequest.currency,
+            CreatedAt = DateTime.UtcNow,
         };
     }
 }

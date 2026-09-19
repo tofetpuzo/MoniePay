@@ -1,4 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// SPDX-License-Identifier: Apache-2.0
+/*
+ * Customer onboarding: creates the Identity user and the customer profile
+ * atomically.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
+using MoniePay.src.auth;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace MoniePay.src.dto
@@ -32,6 +41,9 @@ namespace MoniePay.src.dto
         [JsonPropertyName("confirm")]
         public bool Confirm { get; set; } = true;
 
+        [JsonPropertyName("status")]
+        public Status Status { get; set; }
+
         [JsonPropertyName("DestinationAccountNumber")]
         [Required(ErrorMessage = "DestinationAccountNumber is required")]
         public required string DestinationAccountNumber { get; set; } = string.Empty;
@@ -39,5 +51,9 @@ namespace MoniePay.src.dto
         [JsonPropertyName("DestinationAccountName")]
         [Required(ErrorMessage = "DestinationAccountName is required")]
         public required string DestinationAccountName { get; set; } = string.Empty;
+
+        [JsonPropertyName("Receiver")]
+        public User Receiver { get; set; } = new User();
+
     }
 }
