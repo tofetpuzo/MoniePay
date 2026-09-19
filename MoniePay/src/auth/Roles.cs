@@ -38,7 +38,8 @@ namespace MoniePay.src.auth
             Audit = 1 << 3, // 8
             Finance = 1 << 4, // 16
             Support = 1 << 5, // 32
-            CustomerRep = 1 << 6  // 64
+            CustomerRep = 1 << 6,  // 64
+            Cashier = 1 << 7, // 128
         }
     }
 }
