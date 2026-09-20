@@ -8,6 +8,7 @@
 using Microsoft.EntityFrameworkCore;
 using MoniePay.src.data;
 using MoniePay.src.dto;
+using MoniePay.src.models;
 
 namespace MoniePay.src.services
 {
@@ -21,7 +22,7 @@ namespace MoniePay.src.services
         private readonly AppDbContext _db = db;
 
         // get customer account number
-        public async Task<string> GetCustomerAccountNumberAsync(
+        public async Task<LedgerAccounts> GetCustomerAccountNumberAsync(
             string customerNumber,
             CancellationToken cancellationToken = default)
         {
@@ -31,9 +32,18 @@ namespace MoniePay.src.services
                     a => a.AccountNumber == customerNumber,
                     cancellationToken);
 
-            return account?.AccountNumber
+            return account
                 ?? throw new KeyNotFoundException("Account number not found.");
         }
 
+        // get customer data 
+        public async Task<Boolean> IsCustomerVerified(Guid customerNumberId,
+            CancellationToken cancellationToken = default)
+        {
+            var verified = await _db.Customers.AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == customerNumberId, cancellationToken);
+
+            return verified != null && verified.IsVerifed;
+        }
     }
 }
