@@ -6,6 +6,7 @@
  * Copyright (c) 2026, MoniePay
  */
 
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MoniePay.src.auth;
@@ -18,7 +19,6 @@ namespace MoniePay.src.services
 
     public interface IDepositService
     {
-
         Task<CreateDepositRequest> CreatePaymentIntent(CreateDepositRequest? request, Guid authenticatedUserId);
     }
 
@@ -43,6 +43,8 @@ namespace MoniePay.src.services
                 var cashier = await _db.Users.FirstOrDefaultAsync(
                     u => u.UserName == createDepositRequest.Receiver.UserName && u.RoleFlags.Equals(128) && (u.isActive == true));
 
+                AssertionRequirement.Equals(cashier, _db.Users.AsNoTrackingWithIdentityResolution());
+
                 // cashier is null 
                 if (cashier == null) throw new KeyNotFoundException("unauthorized request");
 
@@ -64,15 +66,14 @@ namespace MoniePay.src.services
 
                         if (!verifiedCustomer) throw new KeyNotFoundException("User is not verified");
 
-                        // fill the details in LedgerAccount
+                        // credit depositor
                         account.Balance += createDepositRequest.Amount;
 
                         // Transaction record for the settlement 
                         var customerTransaction = new Transactions(Guid.NewGuid(), Guid.Empty, DateTime.UtcNow);
                         _db.Transaction.Add(customerTransaction);
 
-
-                        //Enter the entry into both ledgers of the cashier and depositor
+                        //Enter the ledger entries for both the cashier and depositor
                         _db.LedgerEntries.AddRange(
                             new LedgerEntries(Guid.NewGuid(), cashier.Id, createDepositRequest.Amount, "CASH", account.customerId, DateTime.UtcNow)
                             {
@@ -92,24 +93,14 @@ namespace MoniePay.src.services
                         await _db.Database.RollbackTransactionAsync();
                         throw new Exception("Cannot process customer transaction ", ex);
                     }
-
                 }
 
-                // library call needs to be implement for await ...
                 return DepositResponse.From(createDepositRequest);
             }
 
             throw new ArgumentException("Unsupported deposit channel.", nameof(createDepositRequest.channel));
         }
 
-        // check depositor account
-
-
-
-        // import ATM library
-
-
-        // 
-
+        // TODO: Test code for payment
     }
 }
