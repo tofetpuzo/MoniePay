@@ -43,7 +43,6 @@ namespace MoniePay.src.services
                 var cashier = await _db.Users.FirstOrDefaultAsync(
                     u => u.UserName == createDepositRequest.Receiver.UserName && u.RoleFlags.Equals(128) && (u.isActive == true));
 
-                AssertionRequirement.Equals(cashier, _db.Users.AsNoTrackingWithIdentityResolution());
 
                 // cashier is null 
                 if (cashier == null) throw new KeyNotFoundException("unauthorized request");
