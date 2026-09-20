@@ -10,7 +10,7 @@ namespace MoniePay.src.models
     public class Transactions
     {
         public Guid Id { get; set; }
-        public Guid PaymentIntentId { get; set; }
+        public Guid PaymentIntentId { get; set; } = Guid.Empty;
         public Status Status { get; set; } = Status.PROCESSING;
         public DateTime CreatedAt { get; set; }
         public ICollection<LedgerEntries> LedgerEntries { get; set; } = new List<LedgerEntries>();
