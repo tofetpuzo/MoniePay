@@ -7,7 +7,6 @@
 
 using Microsoft.EntityFrameworkCore;
 using MoniePay.src.data;
-using MoniePay.src.dto;
 using MoniePay.src.models;
 
 namespace MoniePay.src.services
@@ -15,9 +14,9 @@ namespace MoniePay.src.services
 
     public interface ICheckCustomerAccountService
     {
-        Task<CreateDepositRequest> GetCustomerAccountNumberAsync(string accountNumber);
+        Task<LedgerAccounts> GetCustomerAccountNumberAsync(string accountNumber, CancellationToken cancellationToken = default);
     }
-    public class CheckCustomerAccountService(AppDbContext db)
+    public class CheckCustomerAccountService(AppDbContext db) : ICheckCustomerAccountService
     {
         private readonly AppDbContext _db = db;
 

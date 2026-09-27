@@ -6,7 +6,6 @@
  * Copyright (c) 2026, MoniePay
  */
 
-using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MoniePay.src.auth;
@@ -19,10 +18,10 @@ namespace MoniePay.src.services
 
     public interface IDepositService
     {
-        Task<CreateDepositRequest> CreatePaymentIntent(CreateDepositRequest? request, Guid authenticatedUserId);
+        Task<DepositResponse> CallCashierLibrary(CreateDepositRequest request, Guid authenticateId);
     }
 
-    public class DepositService(UserManager<User> userManager, AppDbContext db, CheckCustomerAccountService checkCustomerAccountService)
+    public class DepositService(UserManager<User> userManager, AppDbContext db, CheckCustomerAccountService checkCustomerAccountService) : IDepositService
     {
         private readonly UserManager<User> _userManager = userManager;
         private readonly AppDbContext _db = db;
@@ -30,11 +29,15 @@ namespace MoniePay.src.services
 
 
         // logic for counter deposit 
-        public async Task<DepositResponse> CallCashierLibrary(CreateDepositRequest createDepositRequest)
+        public async Task<DepositResponse> CallCashierLibrary(CreateDepositRequest createDepositRequest, Guid authenticateId)
         {
             if (createDepositRequest == null)
             {
-                throw new ArgumentNullException(nameof(createDepositRequest));
+                throw new ArgumentNullException(nameof(createDepositRequest), "Parameter cannot be null.");
+            }
+            if (authenticateId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(authenticateId), "Parameter cannot be empty.");
             }
 
             if (createDepositRequest.channel == Channel.COUNTER && createDepositRequest.Receiver != null)
@@ -43,63 +46,69 @@ namespace MoniePay.src.services
                 var cashier = await _db.Users.FirstOrDefaultAsync(
                     u => u.UserName == createDepositRequest.Receiver.UserName && u.RoleFlags.Equals(128) && (u.isActive == true));
 
-
                 // cashier is null 
                 if (cashier == null) throw new KeyNotFoundException("unauthorized request");
 
                 if (cashier != null)
                 {
-                    createDepositRequest.Receiver = cashier;
-
-                    try
+                    createDepositRequest.Receiver = new CashierDTO()
                     {
-                        // begin transaction 
-                        await using var transaction = await _db.Database.BeginTransactionAsync();
+                        Id = cashier.Id,
+                        UserName = cashier.UserName ?? string.Empty,
+                    };
+                }
 
-                        // get account number 
-                        var account = await _checkCustomerAccountService.GetCustomerAccountNumberAsync(
-                                                        createDepositRequest.DestinationAccountNumber);
+                try
+                {
+                    // begin transaction 
+                    await using var transaction = await _db.Database.BeginTransactionAsync();
 
-                        // retrieve verification details
-                        bool verifiedCustomer = await _checkCustomerAccountService.IsCustomerVerified(account.customerId);
+                    // get account number 
+                    var account = await _checkCustomerAccountService.GetCustomerAccountNumberAsync(
+                                                    createDepositRequest.DestinationAccountNumber);
 
-                        if (!verifiedCustomer) throw new KeyNotFoundException("User is not verified");
+                    // retrieve verification details
+                    bool verifiedCustomer = await _checkCustomerAccountService.IsCustomerVerified(account.customerId);
 
-                        // credit depositor
-                        account.Balance += createDepositRequest.Amount;
+                    if (!verifiedCustomer) throw new KeyNotFoundException("User is not verified");
 
-                        // Transaction record for the settlement 
-                        var customerTransaction = new Transactions(Guid.NewGuid(), Guid.Empty, DateTime.UtcNow);
-                        _db.Transaction.Add(customerTransaction);
+                    // credit depositor
+                    account.Balance += createDepositRequest.Amount;
 
-                        //Enter the ledger entries for both the cashier and depositor
-                        _db.LedgerEntries.AddRange(
-                            new LedgerEntries(Guid.NewGuid(), cashier.Id, createDepositRequest.Amount, "CASH", account.customerId, DateTime.UtcNow)
-                            {
-                                TransactionId = customerTransaction.Id,
-                            },
-                            new LedgerEntries(Guid.NewGuid(), account.Id, createDepositRequest.Amount, "CASH", account.customerId, DateTime.UtcNow)
-                            {
-                                TransactionId = customerTransaction.Id,
-                            });
+                    // Transaction record for the settlement 
+                    var customerTransaction = new Transactions(Guid.NewGuid(), Guid.Empty, DateTime.UtcNow);
+                    _db.Transaction.Add(customerTransaction);
 
-                        _db.Database.CommitTransaction();
-                        _db.SaveChanges();
-
-                    }
-                    catch (Exception ex)
+                    //Enter the ledger entries for both the cashier and depositor
+                    _db.LedgerEntries.AddRange(
+                    new LedgerEntries(Guid.NewGuid(), cashier!.Id, createDepositRequest.Amount, "CASH", account.customerId, DateTime.UtcNow)
                     {
-                        await _db.Database.RollbackTransactionAsync();
-                        throw new Exception("Cannot process customer transaction ", ex);
-                    }
+                        TransactionId = customerTransaction.Id,
+                    },
+                    new LedgerEntries(Guid.NewGuid(), account.Id, createDepositRequest.Amount, "CASH", account.customerId, DateTime.UtcNow)
+                    {
+                        TransactionId = customerTransaction.Id,
+                    });
+
+                    await _db.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    await _db.Database.RollbackTransactionAsync();
+                    throw new Exception("Cannot process customer transaction ", ex);
                 }
 
                 return DepositResponse.From(createDepositRequest);
             }
 
-            throw new ArgumentException("Unsupported deposit channel.", nameof(createDepositRequest.channel));
+            throw new ArgumentException("Unsupported deposit channel.", nameof(createDepositRequest));
         }
 
-        // TODO: Test code for payment
+        // TODO: create endpoint for different users( e.g - cashier etc)
+
+        // TODO: Test code for deposit endpoint
+
+        // TODO: Test code for deposit endpoint
     }
 }
