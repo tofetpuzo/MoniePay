@@ -6,7 +6,6 @@
  * Copyright (c) 2026, MoniePay
  */
 
-using MoniePay.src.auth;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -53,7 +52,7 @@ namespace MoniePay.src.dto
         public required string DestinationAccountName { get; set; } = string.Empty;
 
         [JsonPropertyName("Receiver")]
-        public User Receiver { get; set; } = new User();
+        public CashierDTO Receiver { get; set; } = default!;
 
     }
 }
