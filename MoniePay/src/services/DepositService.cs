@@ -21,7 +21,9 @@ namespace MoniePay.src.services
         Task<DepositResponse> CallCashierLibrary(CreateDepositRequest request, Guid authenticateId);
     }
 
-    public class DepositService(UserManager<User> userManager, AppDbContext db, CheckCustomerAccountService checkCustomerAccountService) : IDepositService
+    public class DepositService(UserManager<User> userManager,
+        AppDbContext db,
+        CheckCustomerAccountService checkCustomerAccountService) : IDepositService
     {
         private readonly UserManager<User> _userManager = userManager;
         private readonly AppDbContext _db = db;
