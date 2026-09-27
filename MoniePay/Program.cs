@@ -33,6 +33,8 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<PaymentService>();
 builder.Services.AddScoped<IPaymentIntentService, PaymentIntentService>();
 builder.Services.AddScoped<LedgerAccountService>();
+builder.Services.AddScoped<CheckCustomerAccountService>();
+builder.Services.AddScoped<IDepositService, DepositService>();
 
 builder.Services.AddDbContextPool<AppDbContext>(options => options.UseNpgsql(connectionString));
 
