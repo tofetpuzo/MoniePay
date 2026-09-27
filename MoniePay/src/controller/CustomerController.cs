@@ -16,14 +16,9 @@ namespace MoniePay.src.controller
     [Route("api/[controller]")]
     [Authorize] // secure by default; registration opts out with [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    public class CustomerController : ControllerBase
+    public class CustomerController(ICustomerService customerService) : ControllerBase
     {
-        private readonly ICustomerService _customerService;
-
-        public CustomerController(ICustomerService customerService)
-        {
-            _customerService = customerService;
-        }
+        private readonly ICustomerService _customerService = customerService;
 
         [AllowAnonymous]
         [HttpPost("register-customer")]
