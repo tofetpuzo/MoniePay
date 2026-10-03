@@ -20,12 +20,17 @@ namespace MoniePay.src.services
         {
             ArgumentNullException.ThrowIfNull(request);
 
+            UserResponse userResponse = null;
+
             if (request.RoleFlags == Roles.RoleType.Cashier)
             {
                 var cashier = await _registerUser.RegisterUserAsync(request, Roles.RoleType.Cashier);
                 if (cashier == null) throw new ArgumentNullException(nameof(cashier));
             }
-            return UserResponse.From(request);
+            userResponse = UserResponse.From(request);
+            userResponse.Status = Status.SUCCESS;
+
+            return userResponse;
         }
     }
 }
