@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * sharedservice onboarding: common user register function
+ * Copyright (c) 2026, MoniePay
+ */
+
+using Microsoft.AspNetCore.Identity;
 using MoniePay.src.auth;
 using MoniePay.src.data;
 using MoniePay.src.dto;
