@@ -30,13 +30,15 @@ namespace MoniePay.src.controller
 
         [AllowAnonymous]
         [HttpPost("register-admin")]
-        public async Task<IActionResult> RegisterAdmin(CreateAdminRequest request)
+        public async Task<IActionResult> RegisterAdmin(CreateUserRequest request)
         {
+            // set admin role by default
+            request.RoleFlags = auth.Roles.RoleType.Admin;
+
             if (request is null) return BadRequest();
             var created = await _adminService.RegisterAdminAsync(request);
             return Ok(created);
         }
-
     }
 }
 
