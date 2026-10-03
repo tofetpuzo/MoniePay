@@ -13,6 +13,7 @@ using MoniePay.Components;
 using MoniePay.src.auth;
 using MoniePay.src.data;
 using MoniePay.src.services;
+using MoniePay.src.shared;
 using System.Security.Claims;
 using System.Text;
 
@@ -27,6 +28,8 @@ builder.Services.AddRazorComponents()
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<RegisterUserService>();
+builder.Services.AddScoped<CashierService>();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
@@ -35,6 +38,7 @@ builder.Services.AddScoped<IPaymentIntentService, PaymentIntentService>();
 builder.Services.AddScoped<LedgerAccountService>();
 builder.Services.AddScoped<CheckCustomerAccountService>();
 builder.Services.AddScoped<IDepositService, DepositService>();
+
 
 builder.Services.AddDbContextPool<AppDbContext>(options => options.UseNpgsql(connectionString));
 
