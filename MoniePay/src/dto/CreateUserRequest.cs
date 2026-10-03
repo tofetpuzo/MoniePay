@@ -13,8 +13,12 @@ using System.Text.Json.Serialization;
 
 namespace MoniePay.src.dto
 {
-    public class CreateAdminRequest
+    public class CreateUserRequest
     {
+
+        [JsonPropertyName("Id")]
+        [Required(ErrorMessage = "Id is required")]
+        public Guid Id { get; set; } = new Guid();
 
         [JsonPropertyName("Username")]
         [Required(ErrorMessage = "Username is required")]
@@ -29,9 +33,12 @@ namespace MoniePay.src.dto
         public required string Email { get; set; }
 
         [JsonProperty("roleFlags")]
-        public Roles.RoleType RoleFlags { get; set; } = Roles.RoleType.Admin;
+        public Roles.RoleType RoleFlags { get; set; }
 
         [JsonProperty("createdOn")]
         public DateTime createdOn { get; set; } = DateTime.UtcNow;
+
+        [JsonProperty("isUserActive")]
+        public bool isUserActive { get; set; }
     }
 }
