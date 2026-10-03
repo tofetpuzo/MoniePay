@@ -94,11 +94,11 @@ namespace MoniePay.src
         ZAR = 155, ZMW = 156, ZWL = 157
     }
 
-
-
     public enum AccountType
     {
         Current = 0,
         Savings = 1 << 0
     }
+
+
 }
