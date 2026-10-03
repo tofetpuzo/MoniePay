@@ -8,58 +8,30 @@ using Microsoft.AspNetCore.Identity;
 using MoniePay.src.auth;
 using MoniePay.src.data;
 using MoniePay.src.dto;
+using MoniePay.src.shared;
 
 namespace MoniePay.src.services
 {
 
     public interface IAdminService
     {
-        Task<User> RegisterAdminAsync(CreateAdminRequest request);
+        Task<User> RegisterAdminAsync(CreateUserRequest request);
         Task<User> GetAdmin(Guid? adminId);
     }
 
-    public class AdminService : IAdminService
+    public class AdminService(UserManager<User> userManager, AppDbContext db, RegisterUserService registerUserService) : IAdminService
     {
-        private readonly UserManager<User> _userManager;
-        private readonly AppDbContext _db;
-
-        public AdminService(UserManager<User> userManager, AppDbContext db)
-        {
-            _userManager = userManager;
-            _db = db;
-        }
+        private readonly UserManager<User> _userManager = userManager;
+        private readonly AppDbContext _db = db;
+        private readonly RegisterUserService _registerUserService = registerUserService;
 
         // Create the Identity user and the admin profile in a single transaction.
         // If either step fails, nothing is committed.
-        public async Task<User> RegisterAdminAsync(CreateAdminRequest request)
+        public async Task<User> RegisterAdminAsync(CreateUserRequest request)
         {
             ArgumentNullException.ThrowIfNull(request);
-
-            await using var transaction = await _db.Database.BeginTransactionAsync();
-
-            var admin = new User
-            {
-                Id = Guid.NewGuid(),
-                UserName = request.Username,
-                Email = request.Email,
-                isActive = true,
-                isAdmin = true,
-                RoleFlags = Roles.RoleType.Admin,
-            };
-
-            IdentityResult res = await _userManager.CreateAsync(admin, request.password);
-            if (!res.Succeeded)
-            {
-                var errors = string.Join("; ", res.Errors.Select(e => $"{e.Code}: {e.Description}"));
-                throw new InvalidOperationException($"Admin registration failed - {errors}");
-            }
-
-            // The user now has an Id, so we can link a role row to it.
-            _db.AppRoles.Add(new Roles(Roles.RoleType.Admin) { UserId = admin.Id });
-
-            await _db.SaveChangesAsync();
-
-            await transaction.CommitAsync();
+            var admin = await _registerUserService.RegisterUserAsync(request, Roles.RoleType.Admin);
+            if (admin is null) throw new InvalidOperationException("Admin registration failed.");
 
             return admin;
         }
