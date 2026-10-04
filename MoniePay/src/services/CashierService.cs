@@ -1,6 +1,6 @@
 ﻿// SPDX-License-Identifier: Apache-2.0
 /*
- * UserService onboarding: user controller for moniepay
+ * CashierService onboarding: cashier service for moniepay
  * Copyright (c) 2026, MoniePay
  */
 
