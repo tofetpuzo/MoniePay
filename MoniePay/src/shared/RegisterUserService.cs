@@ -17,7 +17,7 @@ namespace MoniePay.src.shared
         private readonly UserManager<User> manager = userManager;
 
         // register user service
-        public async Task<User> RegisterUserAsync(CreateUserRequest request, Roles.RoleType roleType)
+        public async Task<User> RegisterUserAccountAsync(CreateUserRequest request, Roles.RoleType roleType)
         {
             ArgumentNullException.ThrowIfNull(request);
 
@@ -29,8 +29,8 @@ namespace MoniePay.src.shared
                 UserName = request.Username,
                 Email = request.Email,
                 isActive = true,
-                //isAdmin = false,
-                RoleFlags = roleType
+                isAdmin = false,
+                RoleFlags = roleType,
             };
 
 
