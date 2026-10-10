@@ -110,5 +110,7 @@ namespace MoniePay.src.services
         // TODO: create endpoint for different users( e.g - cashier etc)
 
         // TODO: Test code for deposit endpoint for cashier
+
+        // TODO: create a cashier controller in admin service
     }
 }
