@@ -30,7 +30,7 @@ namespace MoniePay.src.services
         public async Task<User> RegisterAdminAsync(CreateUserRequest request)
         {
             ArgumentNullException.ThrowIfNull(request);
-            var admin = await _registerUserService.RegisterUserAsync(request, Roles.RoleType.Admin);
+            var admin = await _registerUserService.RegisterUserAccountAsync(request, Roles.RoleType.Admin);
             if (admin is null) throw new InvalidOperationException("Admin registration failed.");
 
             return admin;

@@ -140,7 +140,6 @@ public class IdentityService : IIdentityService
     {
         var user = new User
         {
-
             UserName = userDetails.Username,
             Email = userDetails.Email,
         };
