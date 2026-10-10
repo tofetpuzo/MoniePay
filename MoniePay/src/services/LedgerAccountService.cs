@@ -1,18 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * LedgerAccountService onboarding: ledger account service for moniepay
+ * Copyright (c) 2026, MoniePay
+ */
+using Microsoft.EntityFrameworkCore;
 using MoniePay.src.data;
 using MoniePay.src.models;
 
 namespace MoniePay.src.services
 {
-    public class LedgerAccountService
+    public class LedgerAccountService(AppDbContext dbContext)
     {
-
-        private readonly AppDbContext db;
-        public LedgerAccountService(AppDbContext dbContext)
-        {
-            this.db = dbContext;
-
-        }
+        
+        private readonly AppDbContext db = dbContext;
 
         public async Task<LedgerAccounts> ledgerAccounts(Guid customerId)
         {

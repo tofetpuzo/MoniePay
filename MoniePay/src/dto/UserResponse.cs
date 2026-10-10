@@ -1,4 +1,13 @@
-﻿using MoniePay.src.auth;
+// SPDX-License-Identifier: Apache-2.0
+/*
+ * User response: creates the user response when created by the admin
+ * atomically.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
+
+using MoniePay.src.auth;
 using System.Text.Json.Serialization;
 
 namespace MoniePay.src.dto
