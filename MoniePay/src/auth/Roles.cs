@@ -29,6 +29,7 @@ namespace MoniePay.src.auth
         public User? User { get; set; }
 
         [Flags]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public enum RoleType
         {
             None = 0,

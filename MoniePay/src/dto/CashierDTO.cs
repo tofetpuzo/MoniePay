@@ -9,5 +9,8 @@ namespace MoniePay.src.dto
 
         [JsonPropertyName("username")]
         public string UserName { get; set; } = string.Empty;
+
+        [JsonPropertyName("username")]
+        public Decimal Amount { get; set; }
     }
 }

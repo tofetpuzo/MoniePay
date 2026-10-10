@@ -29,7 +29,8 @@ namespace MoniePay.src.dto
             Id = createUserRequest.Id,
             Username = createUserRequest.Username,
             UserRole = createUserRequest.RoleFlags,
-            Active = createUserRequest.isUserActive
+            Active = createUserRequest.isUserActive,
+            
         };
     }
 }
