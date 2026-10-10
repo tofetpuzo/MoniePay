@@ -17,9 +17,8 @@ namespace MoniePay.src.controller
     [Route("api/[controller]")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    public class UserController(CreateUserRequest user, RegisterUserService registerUserService) : ControllerBase
+    public class UserController(RegisterUserService registerUserService) : ControllerBase
     {
-        private readonly CreateUserRequest _user = user;
         private readonly RegisterUserService _registerUserService = registerUserService;
 
         [AllowAnonymous]
@@ -27,7 +26,7 @@ namespace MoniePay.src.controller
         public async Task<IActionResult> RegisterUser(CreateUserRequest request, Roles.RoleType roleType)
         {
             if (request is null) return BadRequest();
-            var created = await _registerUserService.RegisterUserAsync(request, roleType);
+            var created = await _registerUserService.RegisterUserAccountAsync(request, roleType);
             return Ok(created);
         }
     }

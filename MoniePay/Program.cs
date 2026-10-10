@@ -10,13 +10,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MoniePay.Components;
+using MoniePay.Services;
 using MoniePay.src.auth;
 using MoniePay.src.data;
 using MoniePay.src.services;
 using MoniePay.src.shared;
 using System.Security.Claims;
 using System.Text;
-
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -39,6 +40,9 @@ builder.Services.AddScoped<LedgerAccountService>();
 builder.Services.AddScoped<CheckCustomerAccountService>();
 builder.Services.AddScoped<IDepositService, DepositService>();
 
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 builder.Services.AddDbContextPool<AppDbContext>(options => options.UseNpgsql(connectionString));
 
