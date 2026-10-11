@@ -19,11 +19,11 @@ namespace MoniePay.src.services
         Task<User> GetAdmin(Guid? adminId);
     }
 
-    public class AdminService(UserManager<User> userManager, AppDbContext db, RegisterUserService registerUserService) : IAdminService
+    public class AdminService(UserManager<User> userManager, AppDbContext db, UserService registerUserService) : IAdminService
     {
         private readonly UserManager<User> _userManager = userManager;
         private readonly AppDbContext _db = db;
-        private readonly RegisterUserService _registerUserService = registerUserService;
+        private readonly UserService _registerUserService = registerUserService;
 
         // Create the Identity user and the admin profile in a single transaction.
         // If either step fails, nothing is committed.

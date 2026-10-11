@@ -57,6 +57,7 @@ namespace MoniePay.src.services
                     {
                         Id = cashier.Id,
                         UserName = cashier.UserName ?? string.Empty,
+                        Email = cashier?.Email ?? string.Empty,
                     };
                 }
 
@@ -112,5 +113,9 @@ namespace MoniePay.src.services
         // TODO: Test code for deposit endpoint for cashier
 
         // TODO: create a cashier controller in admin service
+
+        // TOD0: create the distributed BankLedgerAccount and CashierLedgerAcount
+
+        // TODO: create Internal Transaction
     }
 }
