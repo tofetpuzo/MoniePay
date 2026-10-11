@@ -17,15 +17,16 @@ namespace MoniePay.src.controller
     [Route("api/[controller]")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    public class UserController(RegisterUserService registerUserService) : ControllerBase
+    public class UserController(UserService registerUserService) : ControllerBase
     {
-        private readonly RegisterUserService _registerUserService = registerUserService;
+        private readonly UserService _registerUserService = registerUserService;
 
         [AllowAnonymous]
         [HttpPost("register-user")]
         public async Task<IActionResult> RegisterUser(CreateUserRequest request, Roles.RoleType roleType)
         {
             if (request is null) return BadRequest();
+            if (roleType != Roles.RoleType.Cashier) throw new KeyNotFoundException("cannot create cashier role");
             var created = await _registerUserService.RegisterUserAccountAsync(request, roleType);
             return Ok(created);
         }

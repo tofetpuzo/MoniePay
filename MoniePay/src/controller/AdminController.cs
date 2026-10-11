@@ -19,14 +19,10 @@ namespace MoniePay.src.controller
     [Route("api/[controller]")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    public class AdminController : ControllerBase
+    public class AdminController(IAdminService adminService, CashierService cashierService) : ControllerBase
     {
-        private readonly IAdminService _adminService;
-
-        public AdminController(IAdminService adminService)
-        {
-            _adminService = adminService;
-        }
+        private readonly IAdminService _adminService = adminService;
+        private readonly CashierService _cashierService = cashierService;
 
         [AllowAnonymous]
         [HttpPost("register-admin")]
@@ -38,6 +34,19 @@ namespace MoniePay.src.controller
             if (request is null) return BadRequest();
             var created = await _adminService.RegisterAdminAsync(request);
             return Ok(created);
+        }
+
+
+        [AllowAnonymous]
+        [HttpPost("register-cashier")]
+        public async Task<IActionResult> RegisterNewCashier(CreateUserRequest request)
+        {
+            // set cashier role by default
+            request.RoleFlags = auth.Roles.RoleType.Cashier;
+
+            if (request is null) return BadRequest();
+            var cashierCreated = await _cashierService.RegisterCashierAsync(request);
+            return Ok(cashierCreated);
         }
     }
 }

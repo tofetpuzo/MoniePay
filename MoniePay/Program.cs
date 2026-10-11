@@ -29,7 +29,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<RegisterUserService>();
+builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<CashierService>();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
