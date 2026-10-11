@@ -17,7 +17,20 @@ namespace MoniePay.src.dto
         [JsonPropertyName("username")]
         public string UserName { get; set; } = string.Empty;
 
+        [JsonPropertyName("email")]
+        public required string Email { get; set; }
+
         [JsonPropertyName("username")]
         public Decimal Amount { get; set; }
+
+        [JsonPropertyName("currency")]
+        public Currency Currency { get; set; }
+
+        [JsonPropertyName("status")]
+        public Status Status { get; set; }
+
+        [JsonPropertyName("createdAt")]
+        public DateTime CreatedAt { get; set; }
+
     }
 }
