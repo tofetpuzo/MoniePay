@@ -108,7 +108,7 @@ namespace MoniePay.src.services
             throw new ArgumentException("Unsupported deposit channel.", nameof(createDepositRequest));
         }
 
-        // TODO: create endpoint for different users( e.g - cashier etc)
+        // DONE: create endpoint for different users( e.g - cashier etc)
 
         // TODO: Test code for deposit endpoint for cashier
 
