@@ -10,18 +10,30 @@ namespace MoniePay.src.models
     public class Transactions
     {
         public Guid Id { get; set; }
-        public Guid PaymentIntentId { get; set; } = Guid.Empty;
+        public TransactionType Type { get; set; }
+        // only for customer payments 
+        public Guid? PaymentIntentId { get; set; } = Guid.Empty;
+        public decimal Amount { get; set; }
+        public Currency Currency { get; set; }
         public Status Status { get; set; } = Status.PROCESSING;
+        public string Reference { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        //the id of who performed the transaction
+        public Guid? InitiatedBy { get; set; }
         public DateTime CreatedAt { get; set; }
         public ICollection<LedgerEntries> LedgerEntries { get; set; } = new List<LedgerEntries>();
 
         public Transactions() { }
 
-        public Transactions(Guid id, Guid paymentIntentId, DateTime createdAt)
+        public Transactions(TransactionType type, decimal amount, Currency currency, string reference, Guid? initiatedBy)
         {
-            Id = id;
-            PaymentIntentId = paymentIntentId;
-            CreatedAt = createdAt;
+            Id = Guid.CreateVersion7();
+            Type = type;
+            Amount = amount;
+            Currency = currency;
+            Reference = reference;
+            InitiatedBy = initiatedBy;
+            CreatedAt = DateTime.UtcNow;
         }
     }
 }

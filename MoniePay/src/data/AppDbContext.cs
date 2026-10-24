@@ -30,6 +30,9 @@ namespace MoniePay.src.data
         public DbSet<Transactions> Transaction { get; set; }
         public DbSet<WebhookDeliveries> WebhookDeliveries { get; set; }
         public DbSet<Webhooks> Webhook { get; set; }
+        public DbSet<BankAccounts> BankAccount { get; set; }
+        public DbSet<BankFundings> BankFunding { get; set; }
+
         // Named AppRoles, not Roles: IdentityDbContext already exposes a
         // Roles property (DbSet<IdentityRole<Guid>>). Declaring another one
         // hid it (CS0114) and made db.Roles ambiguous to read. The table is
@@ -97,6 +100,44 @@ namespace MoniePay.src.data
                 .WithOne(e => e.Transaction)
                 .HasForeignKey(e => e.TransactionId)
                 .OnDelete(DeleteBehavior.ClientCascade);
+
+            // add new fields for transactions
+            builder.Entity<Transactions>().Property(t => t.Amount).HasPrecision(18, 2);
+            builder.Entity<Transactions>().HasIndex(t => new { t.Type, t.Reference });
+            builder.Entity<Transactions>().HasIndex(t => t.PaymentIntentId);
+
+            // bank account
+            builder.Entity<BankAccounts>()
+                    .HasIndex(b => new { b.SortCode, b.AccountNumber })
+                    .IsUnique();
+
+            builder.Entity<BankAccounts>()
+                .HasOne(b => b.LedgerAccounts)
+                .WithMany()
+                .HasForeignKey(b => b.LedgerAcountId)
+                .OnDelete(DeleteBehavior.ClientCascade);
+
+            // --bank fundings--
+            builder.Entity<BankFundings>().Property(f => f.Amount).HasPrecision(18, 2);
+
+            builder.Entity<BankFundings>()
+                    .HasIndex(f => f.BankReference)
+                    .IsUnique();
+
+            builder.Entity<BankFundings>()
+                .HasOne(f => f.BankAccount)
+                .WithMany(b => b.Fundings)
+                .HasForeignKey(f => f.BankAccountId)
+                .OnDelete(DeleteBehavior.ClientCascade);
+
+            builder.Entity<BankFundings>()
+                .HasOne(f => f.Transactions)
+                .WithMany()
+                .HasForeignKey(f => f.TransactionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+
         }
     }
 }
