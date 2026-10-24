@@ -20,7 +20,7 @@ namespace MoniePay.src.dto
         [JsonPropertyName("email")]
         public required string Email { get; set; }
 
-        [JsonPropertyName("username")]
+        [JsonPropertyName("amount")]
         public Decimal Amount { get; set; }
 
         [JsonPropertyName("currency")]
