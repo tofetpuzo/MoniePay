@@ -97,8 +97,21 @@ namespace MoniePay.src
     public enum AccountType
     {
         Current = 0,
-        Savings = 1 << 0
+        Savings = 1 << 0,
+        Vault = 1 << 1,
+        Till = 1 << 2,
+        Bank = 1 << 3,
+        Capital = 1 << 4,
     }
 
-
+    public enum TransactionType
+    {
+        Payment = 1, // customer - customer
+        Deposit = 2,
+        Withdrawal = 3,
+        CashierFunding = 4,
+        VaultFunding = 5,
+        BankFunding = 6,
+        Payout = 7,
+    }
 }
