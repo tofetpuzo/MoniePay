@@ -135,9 +135,6 @@ namespace MoniePay.src.data
                 .WithMany()
                 .HasForeignKey(f => f.TransactionId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-
-
         }
     }
 }

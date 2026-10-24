@@ -1,4 +1,12 @@
-﻿namespace MoniePay.src.models
+﻿// SPDX-License-Identifier: Apache-2.0
+/*
+ * A real bank account the business holds. Each one is mirrored by a ledger
+ * account of type Bank, which is where its balance lives.
+ *
+ * Copyright (c) 2026, MoniePay
+ */
+
+namespace MoniePay.src.models
 {
     public class BankAccounts
     {

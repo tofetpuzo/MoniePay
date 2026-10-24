@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 /*
- * Recorded financial transactions tied to a payment intent.
+ * One balanced movement of money. Every transaction owns exactly the ledger
+ * entries that make it up, and its Type says what caused it.
  *
  * Copyright (c) 2026, MoniePay
  */
