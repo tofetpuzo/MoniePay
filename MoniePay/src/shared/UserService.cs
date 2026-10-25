@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 /*
- * sharedservice onboarding: common user register function
+ * UserService onboarding: common user register functions
  * Copyright (c) 2026, MoniePay
  */
 
