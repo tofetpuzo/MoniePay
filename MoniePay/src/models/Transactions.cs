@@ -26,9 +26,10 @@ namespace MoniePay.src.models
 
         public Transactions() { }
 
-        public Transactions(TransactionType type, decimal amount, Currency currency, string reference, Guid? initiatedBy)
+        public Transactions(TransactionType type, Guid? paymentIntentId, decimal amount, Currency currency, string reference, Guid? initiatedBy)
         {
             Id = Guid.CreateVersion7();
+            PaymentIntentId = paymentIntentId;
             Type = type;
             Amount = amount;
             Currency = currency;

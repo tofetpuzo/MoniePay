@@ -12,7 +12,7 @@ namespace MoniePay.src.models
         public Guid Id { get; set; }
         public Guid CustomerId { get; set; }
         public decimal Amount { get; set; }
-        public string Currency { get; set; } = string.Empty;
+        public Currency Currency { get; set; }
         public Channel channel { get; set; } = Channel.API;
         public Status Status { get; set; } = Status.PROCESSING;
         public string IdempotencyKey { get; set; } = string.Empty;
@@ -32,7 +32,7 @@ namespace MoniePay.src.models
         // Payment is deliberately not a constructor parameter. An intent exists
         // before any payment does; PaymentService.SettleIntent creates the
         // Payments row and assigns it afterwards.
-        public PaymentIntents(Guid id, Guid customerId, decimal amount, string currency, string idempotencyKey,
+        public PaymentIntents(Guid id, Guid customerId, decimal amount, Currency currency, string idempotencyKey,
             string reference, DateTime createdAt, DateTime updatedAt)
         {
 

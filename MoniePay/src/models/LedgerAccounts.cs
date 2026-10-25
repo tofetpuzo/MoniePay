@@ -11,14 +11,14 @@ namespace MoniePay.src.models
     {
         public Guid Id { get; set; }
         public string AccountName { get; set; } = string.Empty;
-        public AccountType accountType { get; set; }
+        public AccountType AccountType { get; set; }
         public string AccountNumber { get; set; } = string.Empty;
-        public string Currency { get; set; } = string.Empty;
-        public Guid customerId { get; set; }
+        public Currency Currency { get; set; }
+        public Guid CustomerId { get; set; }
         public decimal Balance { get; set; } = decimal.Zero;
         public DateTime CreatedAt { get; set; }
         public LedgerAccounts() { }
-        public LedgerAccounts(Guid id, string accountName, string currency, decimal balance, Guid custId,
+        public LedgerAccounts(Guid id, string accountName, Currency currency, decimal balance, Guid custId,
             string accountNumber, AccountType accountTypes)
         {
             Id = id;
@@ -26,9 +26,9 @@ namespace MoniePay.src.models
             Currency = currency;
             Balance = balance;
             CreatedAt = DateTime.UtcNow;
-            customerId = custId;
+            CustomerId = custId;
             AccountNumber = accountNumber;
-            accountType = accountTypes;
+            AccountType = accountTypes;
         }
 
         public static explicit operator string(LedgerAccounts v)
