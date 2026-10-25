@@ -252,6 +252,108 @@ namespace MoniePay.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("MoniePay.src.models.BankAccounts", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AccountName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("BankName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("LedgerAcountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("SortCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SwiftCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LedgerAcountId");
+
+                    b.HasIndex("SortCode", "AccountNumber")
+                        .IsUnique();
+
+                    b.ToTable("BankAccount");
+                });
+
+            modelBuilder.Entity("MoniePay.src.models.BankFundings", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<Guid>("BankAccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("BankReference")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ConfirmedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ConfirmedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Narration")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("RecordedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("TransactionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BankAccountId");
+
+                    b.HasIndex("BankReference")
+                        .IsUnique();
+
+                    b.HasIndex("TransactionId");
+
+                    b.ToTable("BankFunding");
+                });
+
             modelBuilder.Entity("MoniePay.src.models.Customer", b =>
                 {
                     b.Property<Guid>("Id")
@@ -364,20 +466,19 @@ namespace MoniePay.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("AccountType")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("Balance")
                         .HasColumnType("numeric");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("accountType")
+                    b.Property<int>("Currency")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("customerId")
+                    b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -467,9 +568,8 @@ namespace MoniePay.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Currency")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
@@ -643,16 +743,41 @@ namespace MoniePay.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("PaymentIntentId")
+                    b.Property<int>("Currency")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("InitiatedBy")
                         .HasColumnType("uuid");
+
+                    b.Property<Guid?>("PaymentIntentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Reference")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PaymentIntentId");
+
+                    b.HasIndex("Type", "Reference");
 
                     b.ToTable("Transaction");
                 });
@@ -776,6 +901,35 @@ namespace MoniePay.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MoniePay.src.models.BankAccounts", b =>
+                {
+                    b.HasOne("MoniePay.src.models.LedgerAccounts", "LedgerAccounts")
+                        .WithMany()
+                        .HasForeignKey("LedgerAcountId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("LedgerAccounts");
+                });
+
+            modelBuilder.Entity("MoniePay.src.models.BankFundings", b =>
+                {
+                    b.HasOne("MoniePay.src.models.BankAccounts", "BankAccount")
+                        .WithMany("Fundings")
+                        .HasForeignKey("BankAccountId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("MoniePay.src.models.Transactions", "Transactions")
+                        .WithMany()
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("BankAccount");
+
+                    b.Navigation("Transactions");
+                });
+
             modelBuilder.Entity("MoniePay.src.models.Customer", b =>
                 {
                     b.HasOne("MoniePay.src.auth.User", "user")
@@ -883,6 +1037,11 @@ namespace MoniePay.Migrations
             modelBuilder.Entity("MoniePay.src.auth.User", b =>
                 {
                     b.Navigation("roles");
+                });
+
+            modelBuilder.Entity("MoniePay.src.models.BankAccounts", b =>
+                {
+                    b.Navigation("Fundings");
                 });
 
             modelBuilder.Entity("MoniePay.src.models.Customer", b =>
