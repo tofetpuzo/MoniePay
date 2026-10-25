@@ -27,7 +27,7 @@ namespace MoniePay.src.dto
         public decimal Amount { get; set; }
 
         [JsonPropertyName("currency")]
-        public string Currency { get; set; } = string.Empty;
+        public Currency Currency { get; set; }
 
         [JsonPropertyName("status")]
         public Status Status { get; set; }
@@ -57,7 +57,6 @@ namespace MoniePay.src.dto
             CreatedAt = intent.CreatedAt,
             Payment = paymentResponse
         };
-
 
         public static PaymentIntentResponse From(PaymentIntents intent) => new()
         {

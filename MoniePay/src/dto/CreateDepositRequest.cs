@@ -53,6 +53,5 @@ namespace MoniePay.src.dto
 
         [JsonPropertyName("Receiver")]
         public CashierDTO Receiver { get; set; } = default!;
-
     }
 }
