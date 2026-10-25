@@ -4,6 +4,8 @@
  * Copyright (c) 2026, MoniePay
  */
 
+using System.Text.Json.Serialization;
+
 namespace MoniePay.src
 {
     [Flags]
@@ -26,6 +28,8 @@ namespace MoniePay.src
         COUNTER = 1 << 9,
     }
 
+    [Flags]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum Currency
     {
         AED = 0, AFN = 1, ALL = 2, AMD = 3, ANG = 4,
