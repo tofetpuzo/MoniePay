@@ -81,7 +81,7 @@ namespace MoniePay.src.services
             _db.LedgerAccount.Add(new LedgerAccounts(
                 id: Guid.NewGuid(),
                 accountName: $"{customer.FirstName} {customer.LastName}",
-                currency: request.Currency.ToString(),
+                currency: request.Currency,
                 balance: decimal.Zero,
                 custId: customer.Id,
                 accountTypes: request.AccountType,

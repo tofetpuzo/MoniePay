@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 /*
- * Customer onboarding: creates the Identity user and the customer profile
+ * PaymentIntentservice onboarding: creates the paymentIntent for customer and the customer profile
  * atomically.
  *
  * Copyright (c) 2026, MoniePay
@@ -68,7 +68,7 @@ namespace MoniePay.src.services
                 id: Guid.NewGuid(),
                 customerId: customer.Id,
                 amount: request.Amount,
-                currency: request.currency.ToString(),
+                currency: request.currency,
                 idempotencyKey: request.IdempotencyKey,
                 reference: request.Reference,
                 createdAt: DateTime.UtcNow,

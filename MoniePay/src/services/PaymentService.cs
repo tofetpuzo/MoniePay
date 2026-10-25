@@ -33,7 +33,7 @@ namespace MoniePay.src.services
 
             // retrieve the account of customer if not done
             var source = await db.LedgerAccount.FirstOrDefaultAsync(
-                so => so.customerId == intents.CustomerId && so.Currency == intents.Currency)
+                so => so.CustomerId == intents.CustomerId && so.Currency == intents.Currency)
                  ?? throw new InvalidOperationException($" No {intents.Currency} account found for this customer {intents.CustomerId}");
 
             // match funds and check
@@ -72,8 +72,10 @@ namespace MoniePay.src.services
                 // Link the intent to its payment so callers see the navigation.
                 intents.Payment = payment;
 
-                // Transaction record for the settlement 
-                var transaction = new Transactions(Guid.NewGuid(), intents.Id, DateTime.UtcNow);
+                var transaction = new Transactions
+                    (TransactionType.Deposit, intents.Id, intents.Amount,
+                    Currency.NGN, "transfer to " + intents.DestinationAccountName, source.CustomerId);
+
                 db.Transaction.Add(transaction);
                 intents.Transaction = transaction;
 
@@ -119,7 +121,7 @@ namespace MoniePay.src.services
                 a => a.AccountNumber == intent.DestinationAccountNumber && a.Currency == intent.Currency)
                 ?? throw new InvalidOperationException($"Account {intent.DestinationAccountNumber} not found");
 
-            if (destination_account.customerId == intent.CustomerId)
+            if (destination_account.CustomerId == intent.CustomerId)
                 throw new InvalidOperationException("Cannot send a payment to yourself");
 
             // currency must match, mixing 
@@ -129,7 +131,7 @@ namespace MoniePay.src.services
 
             // get the customer
             var reciever = await db.Customers.FirstOrDefaultAsync
-                (c => c.Id == destination_account.customerId) ?? throw new InvalidOperationException(
+                (c => c.Id == destination_account.CustomerId) ?? throw new InvalidOperationException(
                     "Receiver not found");
 
             // check if user is not blacklisted

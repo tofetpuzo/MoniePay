@@ -11,7 +11,7 @@ namespace MoniePay.src.services
 {
     public class LedgerAccountService(AppDbContext dbContext)
     {
-        
+
         private readonly AppDbContext db = dbContext;
 
         public async Task<LedgerAccounts> ledgerAccounts(Guid customerId)
@@ -19,7 +19,7 @@ namespace MoniePay.src.services
 
             try
             {
-                var account = await db.LedgerAccount.FirstOrDefaultAsync(a => a.customerId == customerId) ?? throw new KeyNotFoundException("cannot find customer");
+                var account = await db.LedgerAccount.FirstOrDefaultAsync(a => a.CustomerId == customerId) ?? throw new KeyNotFoundException("cannot find customer");
                 return account;
             }
             catch

@@ -15,7 +15,6 @@ using MoniePay.src.models;
 
 namespace MoniePay.src.services
 {
-
     public interface IDepositService
     {
         Task<DepositResponse> CallCashierLibrary(CreateDepositRequest request, Guid authenticateId);
@@ -71,24 +70,27 @@ namespace MoniePay.src.services
                                                     createDepositRequest.DestinationAccountNumber);
 
                     // retrieve verification details
-                    bool verifiedCustomer = await _checkCustomerAccountService.IsCustomerVerified(account.customerId);
+                    bool verifiedCustomer = await _checkCustomerAccountService.IsCustomerVerified(account.CustomerId);
 
                     if (!verifiedCustomer) throw new KeyNotFoundException("User is not verified");
 
                     // credit depositor
                     account.Balance += createDepositRequest.Amount;
-
+                    // TransactionType type, decimal amount, Currency currency, string reference, Guid? initiatedBy
                     // Transaction record for the settlement 
-                    var customerTransaction = new Transactions(Guid.NewGuid(), Guid.Empty, DateTime.UtcNow);
+                    var customerTransaction = new Transactions(
+                        TransactionType.CashierFunding, Guid.Empty, createDepositRequest.Amount,
+                        Currency.NGN, "Customer deposit" + account.AccountNumber, cashier?.Id);
+
                     _db.Transaction.Add(customerTransaction);
 
                     //Enter the ledger entries for both the cashier and depositor
                     _db.LedgerEntries.AddRange(
-                    new LedgerEntries(Guid.NewGuid(), cashier!.Id, createDepositRequest.Amount, "CASH", account.customerId, DateTime.UtcNow)
+                    new LedgerEntries(Guid.NewGuid(), cashier!.Id, createDepositRequest.Amount, "CASH", account.CustomerId, DateTime.UtcNow)
                     {
                         TransactionId = customerTransaction.Id,
                     },
-                    new LedgerEntries(Guid.NewGuid(), account.Id, createDepositRequest.Amount, "CASH", account.customerId, DateTime.UtcNow)
+                    new LedgerEntries(Guid.NewGuid(), account.Id, createDepositRequest.Amount, "CASH", account.CustomerId, DateTime.UtcNow)
                     {
                         TransactionId = customerTransaction.Id,
                     });
