@@ -118,4 +118,13 @@ namespace MoniePay.src
         BankFunding = 6,
         Payout = 7,
     }
+
+    public enum VaultType
+    {
+        BranchSafe = 1,
+        ATM = 2,
+        CashInTransit = 3,
+        AgentFloat = 4,
+        Other = 99
+    }
 }
