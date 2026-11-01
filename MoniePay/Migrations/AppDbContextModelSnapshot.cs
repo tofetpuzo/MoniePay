@@ -252,6 +252,49 @@ namespace MoniePay.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("MoniePay.src.dto.Vaults", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("CustodianId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("LedgerAccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LedgerAccountId")
+                        .IsUnique();
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Vault");
+                });
+
             modelBuilder.Entity("MoniePay.src.models.BankAccounts", b =>
                 {
                     b.Property<Guid>("Id")
@@ -279,7 +322,7 @@ namespace MoniePay.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("LedgerAcountId")
+                    b.Property<Guid>("LedgerAccountId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("SortCode")
@@ -292,7 +335,7 @@ namespace MoniePay.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LedgerAcountId");
+                    b.HasIndex("LedgerAccountId");
 
                     b.HasIndex("SortCode", "AccountNumber")
                         .IsUnique();
@@ -901,11 +944,22 @@ namespace MoniePay.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MoniePay.src.dto.Vaults", b =>
+                {
+                    b.HasOne("MoniePay.src.models.LedgerAccounts", "LedgerAccount")
+                        .WithMany()
+                        .HasForeignKey("LedgerAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LedgerAccount");
+                });
+
             modelBuilder.Entity("MoniePay.src.models.BankAccounts", b =>
                 {
                     b.HasOne("MoniePay.src.models.LedgerAccounts", "LedgerAccounts")
                         .WithMany()
-                        .HasForeignKey("LedgerAcountId")
+                        .HasForeignKey("LedgerAccountId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
