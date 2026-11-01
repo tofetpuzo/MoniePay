@@ -19,7 +19,7 @@ namespace MoniePay.src.models
         public Currency Currency { get; set; }
         public bool IsActive { get; set; } = true;
         public DateTime CreatedAt { get; set; }
-        public Guid LedgerAcountId { get; set; }
+        public Guid LedgerAccountId { get; set; }
         public LedgerAccounts? LedgerAccounts { get; set; }
         public ICollection<BankFundings> Fundings { get; set; } = [];
     }

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MoniePay.src.auth;
+using MoniePay.src.dto;
 using MoniePay.src.models;
 
 namespace MoniePay.src.data
@@ -38,6 +39,8 @@ namespace MoniePay.src.data
         // hid it (CS0114) and made db.Roles ambiguous to read. The table is
         // still "Roles" - see ToTable below - so no migration is needed.
         public DbSet<Roles> AppRoles { get; set; }
+        public DbSet<Vaults> Vault { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -114,7 +117,7 @@ namespace MoniePay.src.data
             builder.Entity<BankAccounts>()
                 .HasOne(b => b.LedgerAccounts)
                 .WithMany()
-                .HasForeignKey(b => b.LedgerAcountId)
+                .HasForeignKey(b => b.LedgerAccountId)
                 .OnDelete(DeleteBehavior.ClientCascade);
 
             // --bank fundings--
@@ -135,6 +138,19 @@ namespace MoniePay.src.data
                 .WithMany()
                 .HasForeignKey(f => f.TransactionId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Vaults>()
+                .HasIndex(v => v.Name)
+                .IsUnique();
+
+            builder.Entity<Vaults>()
+                .HasIndex(v => v.LedgerAccountId)
+                .IsUnique();
+
+            builder.Entity<Vaults>()
+                .HasOne(v => v.LedgerAccount)
+                .WithMany()
+                .HasForeignKey(v => v.LedgerAccountId);
         }
     }
 }
