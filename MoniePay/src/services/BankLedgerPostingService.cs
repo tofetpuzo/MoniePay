@@ -58,7 +58,7 @@ namespace MoniePay.src.services
             return transaction;
         }
 
-        // TODO: create BankingFundingRequest and BankFundingResponse
+        // DONE: create BankingFundingRequest and BankFundingResponse
         // TODO: create BankService to use posting transactions service 
         // TODO: create Bank Controller
         // TODO: update the cashier service and cashier controller
