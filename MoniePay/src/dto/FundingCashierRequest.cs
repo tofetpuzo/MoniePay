@@ -21,9 +21,9 @@ namespace MoniePay.src.dto
 
         [JsonPropertyName("Currency")]
         [Required(ErrorMessage = "Currency is required")]
-        public required Currency currency { get; set; }
+        public required Currency CurrencyCode { get; set; }
 
-        public Channel channel { get; set; } = Channel.COUNTER;
+        public Channel ChannelType { get; set; } = Channel.COUNTER;
 
         [JsonPropertyName("idempotencyKey")]
         [Required(ErrorMessage = "idempotencyKey is required")]
@@ -31,5 +31,9 @@ namespace MoniePay.src.dto
 
         [JsonPropertyName("reference")]
         public string Reference { get; set; } = string.Empty;
+
+        [JsonPropertyName("vaultId")]
+        [Required(ErrorMessage = "vaultId is required")]
+        public Guid VaultId { get; set; }
     }
 }
