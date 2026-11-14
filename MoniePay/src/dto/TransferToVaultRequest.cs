@@ -20,7 +20,7 @@ namespace MoniePay.src.dto
 
         [JsonPropertyName("amount")]
         [Range(0.1, double.MaxValue, ErrorMessage = "Amount must be greater than or equal to 0.1")]
-        public Guid Amount { get; set; }
+        public decimal Amount { get; set; }
 
         [JsonPropertyName("bankReference")]
         public required string BankingReference { get; set; }

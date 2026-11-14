@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 
 namespace MoniePay.src.dto
 {
-    public class BankFundingsResponse
+    public class BankFundingResponse
     {
         [JsonPropertyName("id")]
         public Guid Id { get; set; }
@@ -41,7 +41,7 @@ namespace MoniePay.src.dto
         [JsonPropertyName("narration")]
         public DateTime? ConfirmedAt { get; set; }
 
-        public static BankFundingsResponse From(BankFundings f) => new()
+        public static BankFundingResponse From(BankFundings f) => new()
         {
             Id = f.Id,
             BankAccountId = f.BankAccountId,
