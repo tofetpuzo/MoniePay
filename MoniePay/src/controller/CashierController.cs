@@ -7,6 +7,8 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MoniePay.src.dto;
+using MoniePay.src.services;
 
 namespace MoniePay.src.controller
 {
@@ -15,8 +17,22 @@ namespace MoniePay.src.controller
     [Route("api/[controller]")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    public class CashierController : ControllerBase
+    public class CashierController(CashierService cashierService) : ControllerBase
     {
+        private readonly CashierService _cashier = cashierService;
+
+
+        [AllowAnonymous]
+        [HttpPost("fund-cashier")]
+        public async Task<IActionResult> FundCashier(FundingCashierRequest request, Guid fundedBy)
+        {
+            try
+            {
+                return Ok(await _cashier.FundCashierAccount(request, fundedBy);
+
+            }
+
+        }
 
     }
 }
