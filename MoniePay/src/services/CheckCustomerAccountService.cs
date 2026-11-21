@@ -16,6 +16,8 @@ namespace MoniePay.src.services
     {
         Task<LedgerAccounts> GetCustomerAccountNumberAsync(string accountNumber, CancellationToken cancellationToken = default);
     }
+
+    // check customer service
     public class CheckCustomerAccountService(AppDbContext db) : ICheckCustomerAccountService
     {
         private readonly AppDbContext _db = db;
