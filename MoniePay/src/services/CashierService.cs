@@ -6,14 +6,19 @@
 
 
 using MoniePay.src.auth;
+using MoniePay.src.data;
 using MoniePay.src.dto;
 using MoniePay.src.shared;
 
 namespace MoniePay.src.services
 {
-    public class CashierService(UserService userService)
+    public class CashierService(UserService userService, AppDbContext db,
+        LedgerAccountService ledgerAccount)
     {
         private readonly UserService _sharedUserService = userService;
+        private readonly LedgerAccountService _ledger = ledgerAccount;
+        private readonly AppDbContext _db = db;
+
 
         // register user service
         public async Task<UserResponse> RegisterCashierAsync(CreateUserRequest request)
@@ -32,14 +37,23 @@ namespace MoniePay.src.services
         }
 
         // fund the cashier account 
-        public async Task<CashierResponse> FundCashierAccount(CashierDTO cashierDTO)
+        public async Task<CashierResponse> FundCashierAccount(FundingCashierRequest cashierDTO, Guid fundedBy)
         {
-            // retrieve the cashier details
-            var existingCashier = _sharedUserService.GetUser(cashierDTO.Id);
-            if (existingCashier == null) throw new ArgumentNullException(nameof(existingCashier));
+            ArgumentNullException.ThrowIfNull(cashierDTO);
 
             // check amount is not negative
-            if (cashierDTO.Amount < 0) throw new ArgumentNullException(nameof(cashierDTO));
+            if (cashierDTO.Amount <= 0) throw new ArgumentNullException(nameof(cashierDTO));
+
+            // check cashier
+            var cashier = await _db.Users.FindAsync(cashierDTO.CashierId)
+                ?? throw new KeyNotFoundException($"Cashier {cashierDTO.CashierId} not found");
+
+            if (!cashier.RoleFlags.HasFlag(Roles.RoleType.Cashier)) throw new KeyNotFoundException(
+                nameof(cashierDTO));
+
+            if (cashier.isActive != true) throw new KeyNotFoundException(nameof(cashier));
+
+            // check for idempotency.
 
             // check the bank-ledger amount if there is enough cash 
 
